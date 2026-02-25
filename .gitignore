@@ -1,0 +1,7 @@
+node_modules/
+nba-server/node_modules/
+nba-server/users.db
+nba-server/users.db-shm
+nba-server/users.db-wal
+nba-server/.env
+.env

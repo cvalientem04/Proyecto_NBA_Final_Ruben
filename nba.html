@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basketball League - Noticias y Resultados</title>
+    <link rel="stylesheet" href="nba.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">NBA LIVE</div>
+            <ul class="nav-links">
+                <li><a href="#scores">Scores</a></li>
+                <li><a href="#news">News</a></li>
+                <li><a href="#stats">Stats</a></li>
+                <li><a href="#standings">Standings</a></li>
+                <li><a href="#schedule">Schedule</a></li>
+            </ul>
+            <div class="user-area" id="userArea">
+                <span class="user-coins" id="userCoins">🪙 1000</span>
+                <span class="user-name" id="userName">🏀 Usuario</span>
+                <button class="logout-btn" onclick="logout()">Salir</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- API Key Input -->
+        
+
+        <section class="hero">
+            <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1600&h=900&fit=crop" alt="Basketball Hero" class="hero-image">
+            <!--<div class="basketball" style="right: 15%; top: 40%; animation-delay: 0.5s;"></div>-->
+
+            <div class="hero-content">
+                <span class="hero-tag">Featured Story</span>
+                <h1 class="hero-title">Power Rankings: Week 5 - Teams Making Moves in Top 10</h1>
+                <p class="hero-description">The top spots remain competitive as several teams show impressive performance and climb the rankings with outstanding plays.</p>
+            </div>
+        </section>
+
+        <section id="scores">
+            <div class="section-header">
+                <h2 class="section-title">Partidos NBA - En Vivo</h2>
+                <a class="view-all" onclick="loadGames()">Actualizar ↻</a>
+            </div>
+            <div class="scores-container">
+                <div id="games-container">
+                    <div class="loading">Configura tu API Key para ver los partidos en vivo...</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="news">
+            <div class="section-header">
+                <h2 class="section-title">Latest News</h2>
+                <a class="view-all" onclick="loadNews()">Actualizar ↻</a>
+            </div>
+            <div class="news-grid" id="news-container">
+                <div class="loading">Cargando noticias de ESPN...</div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        
+        <p>&copy; 2025 Basketball League. Noticias | Datos en vivo de BallDontLie API</p>
+    </footer>
+    <script>
+        // ============ PROTECCIÓN DE LOGIN ============
+        // Verificar que el usuario esté logueado
+        const token = localStorage.getItem('nba_token');
+        const userData = localStorage.getItem('nba_user');
+
+        if (!token || !userData) {
+            window.location.href = 'login.html';
+        } else {
+            // Mostrar datos del usuario en la barra
+            const user = JSON.parse(userData);
+            document.getElementById('userName').textContent = `${user.avatar || '🏀'} ${user.username}`;
+            document.getElementById('userCoins').textContent = `🪙 ${user.coins || 0}`;
+        }
+
+        function logout() {
+            localStorage.removeItem('nba_token');
+            localStorage.removeItem('nba_user');
+            window.location.href = 'login.html';
+        }
+    </script>
+    <script src="nba.js"></script>
+    
+    <!-- Landbot Chatbot Widget -->
+    <script SameSite="None; Secure" src="https://static.landbot.io/landbot-3/landbot-3.0.0.js"></script>
+    <script>
+      var myLandbot = new Landbot.Livechat({
+        configUrl: 'https://storage.googleapis.com/landbot.online/v3/H-3307513-YIVWWE44T5CZSMXH/index.json',
+      });
+    </script>
+</body>
+</html>
