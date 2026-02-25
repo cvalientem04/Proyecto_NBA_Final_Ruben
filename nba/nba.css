@@ -80,6 +80,45 @@ nav {
     color: #e03a3e;
 }
 
+.user-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: #fff;
+}
+
+.user-coins {
+    font-weight: 700;
+    font-size: 14px;
+    color: #ffd700;
+    background-color: rgba(255, 215, 0, 0.1);
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+.logout-btn {
+    background-color: transparent;
+    border: 1px solid #e03a3e;
+    color: #e03a3e;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+}
+
+.logout-btn:hover {
+    background-color: #e03a3e;
+    color: #fff;
+}
+
 .container {
     max-width: 1400px;
     margin: 0 auto;
