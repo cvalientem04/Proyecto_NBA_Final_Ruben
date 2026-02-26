@@ -6,7 +6,11 @@ const API_SERVER = 'http://localhost:3000';
 // Cargar partidos de ESPN (tiempo real)
 async function loadGames() {
     const gamesContainer = document.getElementById('games-container');
-    gamesContainer.innerHTML = '<div class="loading">Cargando partidos en vivo...</div>';
+    
+    // Solo mostrar loading si no hay contenido previo
+    if (!gamesContainer.querySelector('.game-card') && !gamesContainer.querySelector('.error-message')) {
+        gamesContainer.innerHTML = '<div class="loading">Cargando partidos en vivo...</div>';
+    }
 
     try {
         // Llamar a ESPN a través de nuestro servidor (evita CORS)
