@@ -1,288 +1,94 @@
 <!DOCTYPE html>
-
-
 <html lang="es">
-
-
 <head>
-
-
     <meta charset="UTF-8">
-
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
     <title>NBA LIVE - Steams</title>
-
-
     <link rel="stylesheet" href="nba.css">
-
-
 </head>
-
-
 <body>
-
-
     <header>
-
-
         <nav>
-
-
             <div class="logo"><a href="nba.html" aria-label="Ir al inicio NBA LIVE"><img src="../img/Logo.png" alt="NBA LIVE Logo"></a></div>
-
-
             <ul class="nav-links">
-
-
                 <li><a href="nba.html">Home</a></li>
-
-
                 <li><a href="games.html">Games</a></li>
-
-
                 <li><a href="standings.html">Standings</a></li>
-
-
                 <li><a href="playoffs.html">Playoffs</a></li>
-
-
                 <li><a href="news.html">News</a></li>
-
-
                 <li><a href="stats.html" class="active">Steams</a></li>
-
-
                 <li><a href="minigames.html">MiniGames</a></li>
-
-
                 <li><a href="shop.html">Tienda</a></li>
-
-
                 <li><a href="leaderboard.html">Ranking</a></li>
-
-
                 <li><a href="bets.html">Apuestas</a></li>
-
-
             </ul>
-
-
             <div class="user-area" id="userArea">
-
-
                 <span class="user-coins" id="userCoins">🪙 1000</span>
-
-
-                <span class="user-name" id="userName">�?� Usuario</span>
-
-
+                <span class="user-name" id="userName">🏀 Usuario</span>
                 <a href="favorites.html" class="favorites-nav-btn">Favoritos</a>
-
-
                 <button class="logout-btn" onclick="logout()">Salir</button>
-
-
             </div>
-
-
         </nav>
-
-
     </header>
 
-
-
-
-
     <div class="container">
-
-
         <section id="stats-teams">
-
-
             <div class="section-header">
-
-
                 <h2 class="section-title">Steams por Equipo</h2>
-
-
                 <a class="view-all" onclick="initTeamStatsPage()">Actualizar ↻</a>
-
-
             </div>
-
-
             <p class="section-subtitle">Aqui solo veras los 30 equipos. Haz click en un logo y se abrira una pantalla encima con los jugadores y sus estadísticas.</p>
 
-
-
-
-
             <div class="stats-page-layout">
-
-
                 <div class="team-stats-selector">
-
-
                     <div id="stats-teams-grid" class="team-stats-grid">
-
-
                         <div class="loading">Cargando equipos...</div>
-
-
                     </div>
-
-
                 </div>
-
-
             </div>
-
-
         </section>
-
-
     </div>
-
-
-
-
 
     <div id="team-stats-modal" class="stats-modal" aria-hidden="true">
-
-
         <div class="stats-modal-content team-stats-modal-content">
-
-
             <span id="team-stats-modal-close" class="close-modal" aria-label="Cerrar modal">&times;</span>
-
-
             <div id="team-stats-content" class="team-stats-content">
-
-
                 <div class="loading">Selecciona un equipo...</div>
-
-
             </div>
-
-
         </div>
-
-
     </div>
 
-
-
-
-
     <!-- ===== FOOTER DE CONTACTO ===== -->
-
-
     <footer class="site-footer">
-
-
         <div class="site-footer-inner">
-
-
             <div class="footer-brand">
-
-
                 <img src="../img/Logo.png" alt="NBA LIVE" class="footer-logo">
-
-
                 <p class="footer-tagline">&copy; 2026 NBA LIVE. Datos en vivo de ESPN y NBA CDN</p>
-
-
             </div>
-
-
             <div class="footer-contact-grid">
-
-
                 <a class="footer-contact-item" href="mailto:cvalientem04@educarex.es">
-
-
                     <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>
-
-
                     <span class="footer-channel">Email</span>
-
-
                     <strong>cvalientem04@educarex.es</strong>
-
-
                 </a>
-
-
                 <a class="footer-contact-item" href="https://www.instagram.com/nba_live_09?igsh=MXZtZ21uZzZyNTZkcQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer">
-
-
                     <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-
-
                     <span class="footer-channel">Instagram</span>
-
-
                     <strong>@nba_live_09</strong>
-
-
                 </a>
-
-
                 <a class="footer-contact-item" href="https://chat.whatsapp.com/BuMWRrxfNQ9BYIbJzXsJ7d" target="_blank" rel="noopener noreferrer">
-
-
                     <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-
-
                     <span class="footer-channel">WhatsApp</span>
-
-
                     <strong>Grupo NBA LIVE</strong>
-
-
                 </a>
-
-
             </div>
-
-
         </div>
-
-
     </footer>
 
-
-
-
-
     <script src="js/auth.js"></script>
-
-
     <script src="js/config.js"></script>
-
-
     <script src="js/favoritos.js"></script>
-
-
     <script src="js/stats-equipos.js"></script>
-
-
     <script src="js/script.js"></script>
-
-
 </body>
-
-
 </html>
-
-
-
-
-
-
-
-

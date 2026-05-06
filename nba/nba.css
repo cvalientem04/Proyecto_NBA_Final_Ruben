@@ -89,7 +89,7 @@ nav {
 
 .nav-links {
     display: flex;
-    gap: 16px;
+    gap: 10px;
     list-style: none;
     flex-wrap: nowrap;
     flex: 1;
@@ -102,7 +102,7 @@ nav {
     font-weight: 600;
     font-size: 14px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.2px;
     transition: color 0.3s;
 }
 
@@ -117,7 +117,7 @@ nav {
 .user-area {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 8px;
     flex-wrap: nowrap;
     justify-content: flex-end;
     margin-left: auto;
@@ -134,7 +134,7 @@ nav {
     }
 
     .nav-links {
-        gap: 14px;
+        gap: 7px;
     }
 
     .nav-links a {
@@ -3579,7 +3579,7 @@ footer p {
     color: #000;
     font-weight: 700;
     font-size: 0.82rem;
-    padding: 6px 14px;
+    padding: 5px 10px;
     border-radius: 20px;
     text-decoration: none;
     transition: opacity 0.2s, transform 0.15s;

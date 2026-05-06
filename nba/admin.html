@@ -1,290 +1,288 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NBA LIVE - Panel Admin</title>
-    <link rel="stylesheet" href="nba.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <div class="logo"><a href="nba.html" aria-label="Ir al inicio NBA LIVE"><img src="../img/Logo.png" alt="NBA LIVE Logo"></a></div>
-            <ul class="nav-links">
-                <li><a href="nba.html">Home</a></li>
-                <li><a href="games.html">Games</a></li>
-                <li><a href="standings.html">Standings</a></li>
-                <li><a href="playoffs.html">Playoffs</a></li>
-                <li><a href="news.html">News</a></li>
-                <li><a href="stats.html">Steams</a></li>
-                <li><a href="minigames.html">MiniGames</a></li>
-                <li><a href="shop.html">Tienda</a></li>
-                <li><a href="leaderboard.html">Ranking</a></li>
-                <li><a href="bets.html">Apuestas</a></li>
-            </ul>
-            <div class="user-area" id="userArea">
-                <span class="user-coins" id="userCoins">🪙 0</span>
-                <span class="user-name" id="userName">�?� Admin</span>
-                <a href="favorites.html" class="favorites-nav-btn">Favoritos</a>
-                <button class="logout-btn" onclick="logout()">Salir</button>
-            </div>
-        </nav>
-    </header>
-
-    <div class="container">
-        <section id="admin-panel">
-            <div class="admin-panel-header">
-                <h2 class="section-title">👑 Panel de Administración</h2>
-                <p class="admin-panel-subtitle">Gestiona usuarios, reseñas y monedas de la comunidad NBA LIVE.</p>
-            </div>
-
-            <!-- Stats globales -->
-            <div class="admin-stats-grid" id="adminStatsGrid">
-                <div class="admin-stat-card">
-                    <div class="admin-stat-icon">👥</div>
-                    <div class="admin-stat-value" id="stat-users">—</div>
-                    <div class="admin-stat-label">Usuarios registrados</div>
-                </div>
-                <div class="admin-stat-card">
-                    <div class="admin-stat-icon">�?</div>
-                    <div class="admin-stat-value" id="stat-reviews">—</div>
-                    <div class="admin-stat-label">Reseñas publicadas</div>
-                </div>
-                <div class="admin-stat-card">
-                    <div class="admin-stat-icon">�?�</div>
-                    <div class="admin-stat-value" id="stat-fav-team">—</div>
-                    <div class="admin-stat-label">Equipo más favoriteado</div>
-                </div>
-                <div class="admin-stat-card">
-                    <div class="admin-stat-icon">🎮</div>
-                    <div class="admin-stat-value" id="stat-top-game">—</div>
-                    <div class="admin-stat-label">Minijuego más jugado</div>
-                </div>
-            </div>
-
-            <!-- Tabs -->
-            <div class="admin-tabs">
-                <button class="admin-tab-btn active" data-tab="users" onclick="switchAdminTab('users')">👥 Usuarios</button>
-                <button class="admin-tab-btn" data-tab="reviews" onclick="switchAdminTab('reviews')">�? Reseñas</button>
-                <button class="admin-tab-btn" data-tab="shop" onclick="switchAdminTab('shop')">�?�? Tienda</button>
-                <button class="admin-tab-btn" data-tab="titles" onclick="switchAdminTab('titles')">�?�? Títulos</button>
-                <button class="admin-tab-btn" data-tab="bets" onclick="switchAdminTab('bets')">🎰 Apuestas</button>
-            </div>
-
-            <!-- Tab: Usuarios -->
-            <div id="tab-users" class="admin-tab-content">
-                <div class="admin-toolbar">
-                    <input type="text" id="userSearchInput" placeholder="Buscar por nombre o email..." class="admin-search-input" oninput="filterUsers()">
-                    <span class="admin-toolbar-info" id="usersCountLabel">Cargando...</span>
-                </div>
-                <div class="admin-table-wrapper">
-                    <table class="admin-table" id="usersTable">
-                        <thead>
-                            <tr>
-                                <th>Usuario</th>
-                                <th>Email</th>
-                                <th>Monedas</th>
-                                <th>Rol</th>
-                                <th>Estado</th>
-                                <th>Registro</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersTableBody">
-                            <tr><td colspan="7" class="admin-loading">Cargando usuarios...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Tab: Reseñas -->
-            <div id="tab-reviews" class="admin-tab-content" style="display:none">
-                <div class="admin-toolbar">
-                    <span class="admin-toolbar-info" id="reviewsCountLabel">Cargando...</span>
-                </div>
-                <div id="adminReviewsList" class="admin-reviews-list">
-                    <p class="admin-loading">Cargando reseñas...</p>
-                </div>
-            </div>
-            <!-- Tab: Tienda -->
-            <div id="tab-shop" class="admin-tab-content" style="display:none">
-                <div class="admin-shop-toolbar">
-                    <span class="admin-toolbar-info" id="shopItemsCountLabel">Cargando...</span>
-                    <button class="admin-btn admin-btn--primary" onclick="openCreateItemModal()">+ Crear Item</button>
-                </div>
-                <div class="admin-table-wrapper">
-                    <table class="admin-shop-table" id="shopItemsTable">
-                        <thead>
-                            <tr>
-                                <th>Icono</th>
-                                <th>Nombre</th>
-                                <th>Tipo</th>
-                                <th>Precio</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="shopItemsTableBody">
-                            <tr><td colspan="6" class="admin-loading">Cargando items...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Tab: Títulos Personalizados -->
-            <div id="tab-titles" class="admin-tab-content" style="display:none">
-                <div class="admin-toolbar" style="flex-wrap:wrap;gap:8px">
-                    <div style="display:flex;gap:6px;flex-wrap:wrap">
-                        <button class="admin-btn admin-btn--primary" id="filter-btn-pending" onclick="filterTitleRequests('pending')">�?� Pendientes</button>
-                        <button class="admin-btn admin-btn--ghost" id="filter-btn-all" onclick="filterTitleRequests('all')">Todos</button>
-                        <button class="admin-btn admin-btn--ghost" id="filter-btn-approved" onclick="filterTitleRequests('approved')">✅ Aprobados</button>
-                        <button class="admin-btn admin-btn--ghost" id="filter-btn-rejected" onclick="filterTitleRequests('rejected')">�?� Rechazados</button>
-                    </div>
-                    <span class="admin-toolbar-info" id="titleRequestsCountLabel"></span>
-                </div>
-                <div id="titleRequestsList">
-                    <p class="admin-loading">Cargando solicitudes...</p>
-                </div>
-            </div>
-
-            <!-- Tab: Apuestas -->
-            <div id="tab-bets" class="admin-tab-content" style="display:none">
-                <div class="admin-shop-toolbar">
-                    <span class="admin-toolbar-info" id="betEventsCountLabel">Cargando...</span>
-                    <button class="admin-btn admin-btn--primary" onclick="openCreateBetEventModal()">+ Crear Evento</button>
-                </div>
-                <div id="betEventsList">
-                    <p class="admin-loading">Cargando eventos...</p>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Modal: Crear/Editar Item de Tienda -->
-    <div id="shopItemModal" class="admin-modal" style="display:none">
-        <div class="admin-modal-box">
-            <h3 id="shopItemModalTitle">�?�? Crear Item</h3>
-            <div class="admin-modal-field">
-                <label for="itemName">Nombre</label>
-                <input type="text" id="itemName" maxlength="50" class="admin-modal-input" placeholder="Ej: MVP">
-            </div>
-            <div class="admin-modal-field">
-                <label for="itemDescription">Descripción</label>
-                <input type="text" id="itemDescription" maxlength="200" class="admin-modal-input" placeholder="Descripción del item">
-            </div>
-            <div class="admin-modal-field">
-                <label for="itemType">Tipo</label>
-                <select id="itemType" class="admin-modal-input" onchange="onItemTypeChange()">
-                    <option value="badge">🎖�? Insignia (badge)</option>
-                    <option value="color">🎨 Color de nombre</option>
-                    <option value="frame">🖼�? Marco de avatar</option>
-                    <option value="title">�?�? Slot de título</option>
-                </select>
-            </div>
-            <div class="admin-modal-field">
-                <label for="itemPrice">Precio (🪙 monedas)</label>
-                <input type="number" id="itemPrice" min="0" class="admin-modal-input" placeholder="Ej: 1500">
-            </div>
-            <div class="admin-modal-field">
-                <label for="itemEmoji">Icono (emoji)</label>
-                <input type="text" id="itemEmoji" maxlength="10" class="admin-modal-input" placeholder="Ej: �?�">
-            </div>
-            <div class="admin-modal-field" id="colorHexField" style="display:none">
-                <label for="itemColorHex">Color Hex (solo para tipo Color)</label>
-                <input type="text" id="itemColorHex" class="admin-modal-input" placeholder="#FFD700">
-            </div>
-            <p id="shopItemModalFeedback" class="admin-modal-feedback"></p>
-            <div class="admin-modal-actions">
-                <button class="admin-btn admin-btn--primary" onclick="submitShopItem()">Guardar</button>
-                <button class="admin-btn admin-btn--ghost" onclick="closeShopItemModal()">Cancelar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Crear Evento de Apuesta -->
-    <div id="betEventModal" class="admin-modal" style="display:none">
-        <div class="admin-modal-box">
-            <h3>🎰 Crear Evento de Apuesta</h3>
-            <div class="admin-modal-field">
-                <label for="betEventTitle">Título del evento</label>
-                <input type="text" id="betEventTitle" maxlength="120" class="admin-modal-input" placeholder="Ej: Lakers vs Warriors — Playoffs">
-            </div>
-            <div class="admin-modal-field">
-                <label for="betEventDesc">Descripción (opcional)</label>
-                <input type="text" id="betEventDesc" maxlength="200" class="admin-modal-input" placeholder="Info adicional">
-            </div>
-            <div class="admin-modal-field">
-                <label for="betEventTeamA">Equipo A</label>
-                <input type="text" id="betEventTeamA" maxlength="60" class="admin-modal-input" placeholder="Ej: Los Angeles Lakers">
-            </div>
-            <div class="admin-modal-field">
-                <label for="betEventTeamB">Equipo B</label>
-                <input type="text" id="betEventTeamB" maxlength="60" class="admin-modal-input" placeholder="Ej: Golden State Warriors">
-            </div>
-            <div class="admin-modal-field">
-                <label for="betEventCloses">Fecha de cierre (opcional)</label>
-                <input type="datetime-local" id="betEventCloses" class="admin-modal-input">
-            </div>
-            <p id="betEventModalFeedback" class="admin-modal-feedback"></p>
-            <div class="admin-modal-actions">
-                <button class="admin-btn admin-btn--primary" onclick="submitBetEvent()">Crear</button>
-                <button class="admin-btn admin-btn--ghost" onclick="closeBetEventModal()">Cancelar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Resolver Evento -->
-    <div id="betResolveModal" class="admin-modal" style="display:none">
-        <div class="admin-modal-box">
-            <h3>�?? Resolver Evento</h3>
-            <p id="betResolveEventName" class="admin-modal-subtitle"></p>
-            <div class="admin-modal-field">
-                <label for="betWinnerSelect">¿Quién ganó?</label>
-                <select id="betWinnerSelect" class="admin-modal-input">
-                    <option value="team_a" id="betWinnerA">Equipo A</option>
-                    <option value="team_b" id="betWinnerB">Equipo B</option>
-                    <option value="draw">Empate (devolver apuestas)</option>
-                    <option value="cancelled">Cancelar (devolver apuestas)</option>
-                </select>
-            </div>
-            <p class="admin-modal-subtitle" style="font-size:12px;color:#888">Los ganadores recibirán el doble de su apuesta automáticamente.</p>
-            <p id="betResolveModalFeedback" class="admin-modal-feedback"></p>
-            <div class="admin-modal-actions">
-                <button class="admin-btn admin-btn--primary" onclick="submitBetResolve()">Confirmar</button>
-                <button class="admin-btn admin-btn--ghost" onclick="closeBetResolveModal()">Cancelar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Modificar monedas -->
-    <div id="coinsModal" class="admin-modal" style="display:none">
-        <div class="admin-modal-box">
-            <h3>🪙 Modificar Monedas</h3>
-            <p id="coinsModalUser" class="admin-modal-subtitle"></p>
-            <div class="admin-modal-field">
-                <label for="coinsAmount">Cantidad (positivo para dar, negativo para quitar)</label>
-                <input type="number" id="coinsAmount" placeholder="Ej: 500 o -200" class="admin-modal-input">
-            </div>
-            <p id="coinsModalFeedback" class="admin-modal-feedback"></p>
-            <div class="admin-modal-actions">
-                <button class="admin-btn admin-btn--primary" onclick="submitCoins()">Aplicar</button>
-                <button class="admin-btn admin-btn--ghost" onclick="closeCoinsModal()">Cancelar</button>
-            </div>
-        </div>
-    </div>
-
-    <footer class="site-footer">
-        <div class="site-footer-inner">
-            <div class="footer-brand">
-                <img src="../img/Logo.png" alt="NBA LIVE" class="footer-logo">
-                <p class="footer-tagline">&copy; 2026 NBA LIVE. Panel de Administración</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="js/auth.js"></script>
-    <script src="js/admin.js"></script>
-</body>
-</html>
-
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA LIVE - Panel Admin</title>
+    <link rel="stylesheet" href="nba.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"><a href="nba.html" aria-label="Ir al inicio NBA LIVE"><img src="../img/Logo.png" alt="NBA LIVE Logo"></a></div>
+            <ul class="nav-links">
+                <li><a href="nba.html">Home</a></li>
+                <li><a href="games.html">Games</a></li>
+                <li><a href="standings.html">Standings</a></li>
+                <li><a href="playoffs.html">Playoffs</a></li>
+                <li><a href="news.html">News</a></li>
+                <li><a href="stats.html">Steams</a></li>
+                <li><a href="minigames.html">MiniGames</a></li>
+                <li><a href="shop.html">Tienda</a></li>
+                <li><a href="leaderboard.html">Ranking</a></li>
+                <li><a href="bets.html">Apuestas</a></li>
+            </ul>
+            <div class="user-area" id="userArea">
+                <span class="user-coins" id="userCoins">🪙 0</span>
+                <span class="user-name" id="userName">🏀 Admin</span>
+                <a href="favorites.html" class="favorites-nav-btn">Favoritos</a>
+                <button class="logout-btn" onclick="logout()">Salir</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section id="admin-panel">
+            <div class="admin-panel-header">
+                <h2 class="section-title">👑 Panel de Administración</h2>
+                <p class="admin-panel-subtitle">Gestiona usuarios, reseñas y monedas de la comunidad NBA LIVE.</p>
+            </div>
+
+            <!-- Stats globales -->
+            <div class="admin-stats-grid" id="adminStatsGrid">
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon">👥</div>
+                    <div class="admin-stat-value" id="stat-users">—</div>
+                    <div class="admin-stat-label">Usuarios registrados</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon">⭐</div>
+                    <div class="admin-stat-value" id="stat-reviews">—</div>
+                    <div class="admin-stat-label">Reseñas publicadas</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon">🏀</div>
+                    <div class="admin-stat-value" id="stat-fav-team">—</div>
+                    <div class="admin-stat-label">Equipo más favoriteado</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon">🎮</div>
+                    <div class="admin-stat-value" id="stat-top-game">—</div>
+                    <div class="admin-stat-label">Minijuego más jugado</div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="admin-tabs">
+                <button class="admin-tab-btn active" data-tab="users" onclick="switchAdminTab('users')">👥 Usuarios</button>
+                <button class="admin-tab-btn" data-tab="reviews" onclick="switchAdminTab('reviews')">⭐ Reseñas</button>
+                <button class="admin-tab-btn" data-tab="shop" onclick="switchAdminTab('shop')">🛍️ Tienda</button>
+                <button class="admin-tab-btn" data-tab="titles" onclick="switchAdminTab('titles')">✏️ Títulos</button>
+                <button class="admin-tab-btn" data-tab="bets" onclick="switchAdminTab('bets')">🎰 Apuestas</button>
+            </div>
+
+            <!-- Tab: Usuarios -->
+            <div id="tab-users" class="admin-tab-content">
+                <div class="admin-toolbar">
+                    <input type="text" id="userSearchInput" placeholder="Buscar por nombre o email..." class="admin-search-input" oninput="filterUsers()">
+                    <span class="admin-toolbar-info" id="usersCountLabel">Cargando...</span>
+                </div>
+                <div class="admin-table-wrapper">
+                    <table class="admin-table" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Email</th>
+                                <th>Monedas</th>
+                                <th>Rol</th>
+                                <th>Estado</th>
+                                <th>Registro</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr><td colspan="7" class="admin-loading">Cargando usuarios...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab: Reseñas -->
+            <div id="tab-reviews" class="admin-tab-content" style="display:none">
+                <div class="admin-toolbar">
+                    <span class="admin-toolbar-info" id="reviewsCountLabel">Cargando...</span>
+                </div>
+                <div id="adminReviewsList" class="admin-reviews-list">
+                    <p class="admin-loading">Cargando reseñas...</p>
+                </div>
+            </div>
+            <!-- Tab: Tienda -->
+            <div id="tab-shop" class="admin-tab-content" style="display:none">
+                <div class="admin-shop-toolbar">
+                    <span class="admin-toolbar-info" id="shopItemsCountLabel">Cargando...</span>
+                    <button class="admin-btn admin-btn--primary" onclick="openCreateItemModal()">+ Crear Item</button>
+                </div>
+                <div class="admin-table-wrapper">
+                    <table class="admin-shop-table" id="shopItemsTable">
+                        <thead>
+                            <tr>
+                                <th>Icono</th>
+                                <th>Nombre</th>
+                                <th>Tipo</th>
+                                <th>Precio</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="shopItemsTableBody">
+                            <tr><td colspan="6" class="admin-loading">Cargando items...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab: Títulos Personalizados -->
+            <div id="tab-titles" class="admin-tab-content" style="display:none">
+                <div class="admin-toolbar" style="flex-wrap:wrap;gap:8px">
+                    <div style="display:flex;gap:6px;flex-wrap:wrap">
+                        <button class="admin-btn admin-btn--primary" id="filter-btn-pending" onclick="filterTitleRequests('pending')">⏳ Pendientes</button>
+                        <button class="admin-btn admin-btn--ghost" id="filter-btn-all" onclick="filterTitleRequests('all')">Todos</button>
+                        <button class="admin-btn admin-btn--ghost" id="filter-btn-approved" onclick="filterTitleRequests('approved')">✅ Aprobados</button>
+                        <button class="admin-btn admin-btn--ghost" id="filter-btn-rejected" onclick="filterTitleRequests('rejected')">❌ Rechazados</button>
+                    </div>
+                    <span class="admin-toolbar-info" id="titleRequestsCountLabel"></span>
+                </div>
+                <div id="titleRequestsList">
+                    <p class="admin-loading">Cargando solicitudes...</p>
+                </div>
+            </div>
+
+            <!-- Tab: Apuestas -->
+            <div id="tab-bets" class="admin-tab-content" style="display:none">
+                <div class="admin-shop-toolbar">
+                    <span class="admin-toolbar-info" id="betEventsCountLabel">Cargando...</span>
+                    <button class="admin-btn admin-btn--primary" onclick="openCreateBetEventModal()">+ Crear Evento</button>
+                </div>
+                <div id="betEventsList">
+                    <p class="admin-loading">Cargando eventos...</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal: Crear/Editar Item de Tienda -->
+    <div id="shopItemModal" class="admin-modal" style="display:none">
+        <div class="admin-modal-box">
+            <h3 id="shopItemModalTitle">🛍️ Crear Item</h3>
+            <div class="admin-modal-field">
+                <label for="itemName">Nombre</label>
+                <input type="text" id="itemName" maxlength="50" class="admin-modal-input" placeholder="Ej: MVP">
+            </div>
+            <div class="admin-modal-field">
+                <label for="itemDescription">Descripción</label>
+                <input type="text" id="itemDescription" maxlength="200" class="admin-modal-input" placeholder="Descripción del item">
+            </div>
+            <div class="admin-modal-field">
+                <label for="itemType">Tipo</label>
+                <select id="itemType" class="admin-modal-input" onchange="onItemTypeChange()">
+                    <option value="badge">🎖️ Insignia (badge)</option>
+                    <option value="color">🎨 Color de nombre</option>
+                    <option value="frame">🖼️ Marco de avatar</option>
+                    <option value="title">✏️ Slot de título</option>
+                </select>
+            </div>
+            <div class="admin-modal-field">
+                <label for="itemPrice">Precio (🪙 monedas)</label>
+                <input type="number" id="itemPrice" min="0" class="admin-modal-input" placeholder="Ej: 1500">
+            </div>
+            <div class="admin-modal-field">
+                <label for="itemEmoji">Icono (emoji)</label>
+                <input type="text" id="itemEmoji" maxlength="10" class="admin-modal-input" placeholder="Ej: 🏆">
+            </div>
+            <div class="admin-modal-field" id="colorHexField" style="display:none">
+                <label for="itemColorHex">Color Hex (solo para tipo Color)</label>
+                <input type="text" id="itemColorHex" class="admin-modal-input" placeholder="#FFD700">
+            </div>
+            <p id="shopItemModalFeedback" class="admin-modal-feedback"></p>
+            <div class="admin-modal-actions">
+                <button class="admin-btn admin-btn--primary" onclick="submitShopItem()">Guardar</button>
+                <button class="admin-btn admin-btn--ghost" onclick="closeShopItemModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Crear Evento de Apuesta -->
+    <div id="betEventModal" class="admin-modal" style="display:none">
+        <div class="admin-modal-box">
+            <h3>🎰 Crear Evento de Apuesta</h3>
+            <div class="admin-modal-field">
+                <label for="betEventTitle">Título del evento</label>
+                <input type="text" id="betEventTitle" maxlength="120" class="admin-modal-input" placeholder="Ej: Lakers vs Warriors — Playoffs">
+            </div>
+            <div class="admin-modal-field">
+                <label for="betEventDesc">Descripción (opcional)</label>
+                <input type="text" id="betEventDesc" maxlength="200" class="admin-modal-input" placeholder="Info adicional">
+            </div>
+            <div class="admin-modal-field">
+                <label for="betEventTeamA">Equipo A</label>
+                <input type="text" id="betEventTeamA" maxlength="60" class="admin-modal-input" placeholder="Ej: Los Angeles Lakers">
+            </div>
+            <div class="admin-modal-field">
+                <label for="betEventTeamB">Equipo B</label>
+                <input type="text" id="betEventTeamB" maxlength="60" class="admin-modal-input" placeholder="Ej: Golden State Warriors">
+            </div>
+            <div class="admin-modal-field">
+                <label for="betEventCloses">Fecha de cierre (opcional)</label>
+                <input type="datetime-local" id="betEventCloses" class="admin-modal-input">
+            </div>
+            <p id="betEventModalFeedback" class="admin-modal-feedback"></p>
+            <div class="admin-modal-actions">
+                <button class="admin-btn admin-btn--primary" onclick="submitBetEvent()">Crear</button>
+                <button class="admin-btn admin-btn--ghost" onclick="closeBetEventModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Resolver Evento -->
+    <div id="betResolveModal" class="admin-modal" style="display:none">
+        <div class="admin-modal-box">
+            <h3>🏁 Resolver Evento</h3>
+            <p id="betResolveEventName" class="admin-modal-subtitle"></p>
+            <div class="admin-modal-field">
+                <label for="betWinnerSelect">¿Quién ganó?</label>
+                <select id="betWinnerSelect" class="admin-modal-input">
+                    <option value="team_a" id="betWinnerA">Equipo A</option>
+                    <option value="team_b" id="betWinnerB">Equipo B</option>
+                    <option value="draw">Empate (devolver apuestas)</option>
+                    <option value="cancelled">Cancelar (devolver apuestas)</option>
+                </select>
+            </div>
+            <p class="admin-modal-subtitle" style="font-size:12px;color:#888">Los ganadores recibirán el doble de su apuesta automáticamente.</p>
+            <p id="betResolveModalFeedback" class="admin-modal-feedback"></p>
+            <div class="admin-modal-actions">
+                <button class="admin-btn admin-btn--primary" onclick="submitBetResolve()">Confirmar</button>
+                <button class="admin-btn admin-btn--ghost" onclick="closeBetResolveModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Modificar monedas -->
+    <div id="coinsModal" class="admin-modal" style="display:none">
+        <div class="admin-modal-box">
+            <h3>🪙 Modificar Monedas</h3>
+            <p id="coinsModalUser" class="admin-modal-subtitle"></p>
+            <div class="admin-modal-field">
+                <label for="coinsAmount">Cantidad (positivo para dar, negativo para quitar)</label>
+                <input type="number" id="coinsAmount" placeholder="Ej: 500 o -200" class="admin-modal-input">
+            </div>
+            <p id="coinsModalFeedback" class="admin-modal-feedback"></p>
+            <div class="admin-modal-actions">
+                <button class="admin-btn admin-btn--primary" onclick="submitCoins()">Aplicar</button>
+                <button class="admin-btn admin-btn--ghost" onclick="closeCoinsModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <div class="footer-brand">
+                <img src="../img/Logo.png" alt="NBA LIVE" class="footer-logo">
+                <p class="footer-tagline">&copy; 2026 NBA LIVE. Panel de Administración</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
