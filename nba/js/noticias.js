@@ -44,6 +44,22 @@ function sanitizeEspnText(value) {
     return parser.value.replace(/\s+/g, ' ').trim();
 }
 
+function parseStoryParagraphs(html) {
+    if (!html) return [];
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    const paragraphs = [];
+    div.querySelectorAll('p').forEach(p => {
+        const text = p.textContent.replace(/\s+/g, ' ').trim();
+        if (text) paragraphs.push(text);
+    });
+    if (paragraphs.length === 0) {
+        const text = div.textContent.replace(/\s+/g, ' ').trim();
+        if (text) paragraphs.push(text);
+    }
+    return paragraphs;
+}
+
 function getNewsArticleId(article, index) {
     return String(article?.id || article?.nowId || article?.guid || `news-${index}`);
 }
@@ -79,30 +95,48 @@ function getNewsLink(article, detail) {
 
 function buildModalArticleView(article, detail, isLoadingDetail) {
     const headline = detail?.headline || article?.headline || 'Noticia NBA';
-    const description = sanitizeEspnText(detail?.description || article?.description || 'No hay descripcion disponible para esta noticia.');
-    const extendedText = sanitizeEspnText(detail?.story || detail?.summary || '');
+    const description = sanitizeEspnText(detail?.description || article?.description || '');
+    const byline = detail?.byline || article?.byline || '';
     const source = detail?.source || article?.source || 'ESPN';
     const published = detail?.published || article?.published || article?.lastModified;
     const category = getNewsCategory(article, detail);
     const imageUrl = getNewsImage(article, detail);
     const articleLink = getNewsLink(article, detail);
 
+    const paragraphs = parseStoryParagraphs(detail?.story || detail?.summary || '');
+
+    let bodyHtml;
+    if (paragraphs.length > 0) {
+        bodyHtml = `<p class="news-modal-intro">${escapeHtml(paragraphs[0])}</p>`;
+        bodyHtml += paragraphs.slice(1).map(p => `<p>${escapeHtml(p)}</p>`).join('');
+    } else if (description) {
+        bodyHtml = `<p class="news-modal-intro">${escapeHtml(description)}</p>`;
+        bodyHtml += isLoadingDetail
+            ? ''
+            : '<p class="news-modal-note">ESPN no envió el texto completo para esta noticia.</p>';
+    } else {
+        bodyHtml = '<p class="news-modal-note">No hay texto disponible.</p>';
+    }
+
+    const authorLine = byline
+        ? `<strong class="news-modal-author">${escapeHtml(byline)}</strong> · ${escapeHtml(source)} · ${escapeHtml(formatNewsDate(published))}`
+        : `${escapeHtml(source)} · ${escapeHtml(formatNewsDate(published))}`;
+
     return `
         <div class="news-modal-fixed-top">
             <header class="news-modal-header">
                 <p class="news-modal-kicker">${escapeHtml(category)}</p>
                 <h3>${escapeHtml(headline)}</h3>
-                <p class="news-modal-meta">${escapeHtml(source)} · ${escapeHtml(formatNewsDate(published))}</p>
+                <p class="news-modal-meta">${authorLine}</p>
             </header>
         </div>
         <div class="news-modal-scroll-body">
             <div class="news-modal-body">
                 <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(headline)}" class="news-modal-image" onerror="this.src='${NEWS_FALLBACK_IMAGE}'">
                 <div class="news-modal-text">
-                    <p>${escapeHtml(description)}</p>
-                    ${extendedText ? `<p>${escapeHtml(extendedText)}</p>` : '<p class="news-modal-note">ESPN no envio texto largo para esta noticia, pero aqui tienes el resumen oficial.</p>'}
-                    ${articleLink && articleLink !== '#' ? `<p class="news-modal-note"><a href="${escapeHtml(articleLink)}" target="_blank" rel="noopener noreferrer">Abrir noticia original</a></p>` : ''}
-                    ${isLoadingDetail ? '<p class="news-modal-loading">Cargando mas detalle de ESPN...</p>' : ''}
+                    ${bodyHtml}
+                    ${articleLink && articleLink !== '#' ? `<p class="news-modal-link"><a href="${escapeHtml(articleLink)}" target="_blank" rel="noopener noreferrer">Leer noticia completa en ESPN →</a></p>` : ''}
+                    ${isLoadingDetail ? '<p class="news-modal-loading">Cargando artículo completo...</p>' : ''}
                 </div>
             </div>
         </div>

@@ -15,6 +15,20 @@ async function sendEmail(to, subject, html) {
     await mailer.sendMail({ from: `"NBA LIVE" <${process.env.GMAIL_USER}>`, to, subject, html });
 }
 
+async function translateText(text) {
+    if (!text || text.length < 3) return text;
+    try {
+        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text.slice(0, 500))}&langpair=en|es&de=${encodeURIComponent(process.env.GMAIL_USER || '')}`;
+        const res = await fetch(url);
+        if (!res.ok) return text;
+        const data = await res.json();
+        const translated = data?.responseData?.translatedText;
+        return (translated && !translated.includes('MYMEMORY WARNING')) ? translated : text;
+    } catch {
+        return text;
+    }
+}
+
 // Importar base de datos
 const db = require('./database');
 
@@ -1518,10 +1532,21 @@ app.get('/api/news', async (req, res) => {
         }
         const response = await fetch('https://site.api.espn.com/apis/site/v2/sports/basketball/nba/news');
         if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
-        const data = await response.json();
-        cache.espnNews = data;
+        const raw = await response.json();
+
+        const rawArticles = Array.isArray(raw?.articles) ? raw.articles.slice(0, 6) : [];
+        const articles = await Promise.all(rawArticles.map(async article => {
+            const [headline, description] = await Promise.all([
+                translateText(article.headline || ''),
+                translateText(article.description || '')
+            ]);
+            return { ...article, headline, description };
+        }));
+
+        const processed = { articles };
+        cache.espnNews = processed;
         cache.espnNewsTime = now;
-        res.json(data);
+        res.json(processed);
     } catch (error) {
         console.error('Error /api/news:', error.message);
         res.status(500).json({ error: 'Error al obtener noticias de ESPN.' });

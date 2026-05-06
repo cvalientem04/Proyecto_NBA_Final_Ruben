@@ -463,6 +463,27 @@ function buildTeamLeaderChip(label, leader) {
     return `<span class="favorite-stat-chip">${label}: ${escapeHtml(leader.name)} ${escapeHtml(formatNumber(leader.value))}</span>`;
 }
 
+function buildLeaderStatBox(label, leader) {
+    const lastName = leader ? escapeHtml(leader.name.split(' ').slice(-1)[0]) : '-';
+    const value = leader ? escapeHtml(formatNumber(leader.value)) : '-';
+    return `
+        <div class="fav-leader-box">
+            <span class="fav-leader-label">${escapeHtml(label)}</span>
+            <span class="fav-leader-name">${lastName}</span>
+            <span class="fav-leader-value">${value}</span>
+        </div>
+    `;
+}
+
+function buildPlayerStatBox(label, value) {
+    return `
+        <div class="fav-stat-box">
+            <span class="fav-stat-label">${escapeHtml(label)}</span>
+            <span class="fav-stat-value">${escapeHtml(value)}</span>
+        </div>
+    `;
+}
+
 function buildPlayerInsightFromStored(player) {
     if (!player || !player.season_stats) return null;
 
@@ -493,48 +514,56 @@ function renderFavoriteTeams() {
         return;
     }
 
-    list.innerHTML = filteredTeams
-        .map(team => {
-            const teamInsight = getTeamInsight(team.abbr);
-            const loadingStatsText = favoritesInsightsState.loading && !teamInsight
-                ? '<p class="favorite-meta-line">Cargando estadísticas del equipo...</p>'
-                : '';
+    list.innerHTML = filteredTeams.map(team => {
+        const insight = getTeamInsight(team.abbr);
+        const loading = favoritesInsightsState.loading && !insight;
+        const logoUrl = team.logo || getTeamLogoByAbbr(team.abbr);
+        const season = insight?.season || '-';
 
-            const seasonText = teamInsight?.season
-                ? `<p class="favorite-meta-line">Temporada: ${escapeHtml(teamInsight.season)}</p>`
-                : '<p class="favorite-meta-line">Temporada: sin datos</p>';
+        const leadersHtml = insight
+            ? `
+                <div class="fav-leaders-grid">
+                    ${buildLeaderStatBox('Anotador', insight.topScorer)}
+                    ${buildLeaderStatBox('Rebotes', insight.topRebounder)}
+                    ${buildLeaderStatBox('Asistencias', insight.topAssist)}
+                </div>
+            `
+            : loading
+                ? '<p class="fav-loading-text">Cargando estadísticas...</p>'
+                : '<p class="fav-loading-text">Sin datos del equipo.</p>';
 
-            const chips = teamInsight
-                ? `
-                    <div class="favorite-stats-grid">
-                        ${buildTeamLeaderChip('Max PTS', teamInsight.topScorer)}
-                        ${buildTeamLeaderChip('Max REB', teamInsight.topRebounder)}
-                        ${buildTeamLeaderChip('Max AST', teamInsight.topAssist)}
-                    </div>
-                `
-                : '';
+        const nextGame = insight?.nextGame;
+        const nextGameHtml = nextGame
+            ? `<div class="fav-next-game-bar">
+                    <span class="fav-next-label">PRÓXIMO PARTIDO</span>
+                    <span class="fav-next-value">${escapeHtml(nextGame.isHome ? 'vs' : '@')} ${escapeHtml(nextGame.opponentAbbr || 'NBA')} · ${escapeHtml(formatDateTime(nextGame.gameDate))}</span>
+               </div>`
+            : `<div class="fav-next-game-bar fav-next-game-bar--empty">
+                    <span class="fav-next-label">PRÓXIMO PARTIDO</span>
+                    <span class="fav-next-value">Sin datos disponibles</span>
+               </div>`;
 
-            const nextGameText = `<p class="favorite-next-game">${escapeHtml(formatNextGameLine(teamInsight?.nextGame))}</p>`;
-
-            return `
-                <li class="favorite-item favorite-item-detailed favorite-team-item">
-                    <div class="favorite-item-top">
-                        <div class="favorite-main">
-                            <img src="${escapeHtml(team.logo || getTeamLogoByAbbr(team.abbr))}" alt="${escapeHtml(team.name)}" class="favorite-team-logo" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1546519638-68e109498ffc?w=100&h=100&fit=crop'">
-                            <span class="favorite-pill"><span class="favorite-abbr">${escapeHtml(team.abbr)}</span>${escapeHtml(team.name)}</span>
+        return `
+            <li class="fav-card fav-team-card">
+                <div class="fav-card-header">
+                    <img src="${escapeHtml(logoUrl)}" alt="${escapeHtml(team.name)}" class="fav-team-logo-big" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1546519638-68e109498ffc?w=100&h=100&fit=crop'">
+                    <div class="fav-card-title">
+                        <span class="fav-team-fullname">${escapeHtml(team.name)}</span>
+                        <div class="fav-card-badges">
+                            <span class="fav-abbr-badge">${escapeHtml(team.abbr)}</span>
+                            <span class="fav-season-badge">Temp. ${escapeHtml(season)}</span>
                         </div>
-                        <button class="favorite-remove-btn" onclick="removeFavoriteByIndex('team', ${team.index})" aria-label="Quitar equipo favorito">&times;</button>
                     </div>
-                    <div class="favorite-details">
-                        ${seasonText}
-                        ${loadingStatsText}
-                        ${chips}
-                        ${nextGameText}
-                    </div>
-                </li>
-            `;
-        })
-        .join('');
+                    <button class="fav-remove-btn" onclick="removeFavoriteByIndex('team', ${team.index})" aria-label="Quitar equipo favorito">×</button>
+                </div>
+                <div class="fav-card-body">
+                    <p class="fav-section-label">LÍDERES DEL EQUIPO</p>
+                    ${leadersHtml}
+                </div>
+                ${nextGameHtml}
+            </li>
+        `;
+    }).join('');
 }
 
 function renderFavoritePlayers() {
@@ -552,54 +581,71 @@ function renderFavoritePlayers() {
         return;
     }
 
-    list.innerHTML = filteredPlayers
-        .map(player => {
-            const dynamicInsight = getPlayerInsight(player.name);
-            const storedInsight = buildPlayerInsightFromStored(player);
-            const playerInsight = dynamicInsight || storedInsight;
-            const stats = playerInsight?.season_stats || null;
+    list.innerHTML = filteredPlayers.map(player => {
+        const dynamicInsight = getPlayerInsight(player.name);
+        const storedInsight = buildPlayerInsightFromStored(player);
+        const insight = dynamicInsight || storedInsight;
+        const stats = insight?.season_stats || null;
+        const loading = favoritesInsightsState.loading && !insight;
 
-            const teamText = playerInsight?.teamAbbr
-                ? `${playerInsight.teamAbbr}${playerInsight.position ? ` · ${playerInsight.position}` : ''}`
-                : 'Equipo sin resolver';
+        const headshot = insight?.headshot || player.headshot || '';
+        const teamAbbr = insight?.teamAbbr || player.teamAbbr || '';
+        const position = insight?.position || player.position || '';
+        const season = insight?.season || player.season || '-';
 
-            const seasonText = playerInsight?.season || '-';
-            const nextGameText = formatNextGameLine(playerInsight?.nextGame);
+        const avatarHtml = headshot
+            ? `<img src="${escapeHtml(headshot)}" alt="${escapeHtml(player.name)}" class="fav-player-headshot" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">`
+            : '';
+        const fallbackHtml = `<span class="fav-player-badge-fallback" style="${headshot ? 'display:none' : ''}">★</span>`;
 
-            const statsHtml = stats
-                ? `
-                    <div class="favorite-stats-grid favorite-stats-grid-player">
-                        <span class="favorite-stat-chip">PTS: ${escapeHtml(formatNumber(stats.pts))}</span>
-                        <span class="favorite-stat-chip">REB: ${escapeHtml(formatNumber(stats.reb))}</span>
-                        <span class="favorite-stat-chip">AST: ${escapeHtml(formatNumber(stats.ast))}</span>
-                        <span class="favorite-stat-chip">FG%: ${escapeHtml(formatPercentage(stats.fg_pct))}</span>
+        const metaParts = [teamAbbr, position, `Temp. ${season}`].filter(Boolean);
+
+        const statsHtml = stats
+            ? `<div class="fav-stats-grid-big">
+                    ${buildPlayerStatBox('PTS', formatNumber(stats.pts))}
+                    ${buildPlayerStatBox('REB', formatNumber(stats.reb))}
+                    ${buildPlayerStatBox('AST', formatNumber(stats.ast))}
+                    ${buildPlayerStatBox('ROB', formatNumber(stats.stl))}
+                    ${buildPlayerStatBox('TAP', formatNumber(stats.blk))}
+                    ${buildPlayerStatBox('FG%', formatPercentage(stats.fg_pct))}
+                    ${buildPlayerStatBox('3P%', formatPercentage(stats.fg3_pct))}
+                    ${buildPlayerStatBox('TL%', formatPercentage(stats.ft_pct))}
+               </div>`
+            : loading
+                ? '<p class="fav-loading-text">Buscando estadísticas...</p>'
+                : '<p class="fav-loading-text">Sin estadísticas disponibles.</p>';
+
+        const nextGame = insight?.nextGame;
+        const nextGameHtml = nextGame
+            ? `<div class="fav-next-game-bar">
+                    <span class="fav-next-label">PRÓXIMO PARTIDO</span>
+                    <span class="fav-next-value">${escapeHtml(nextGame.isHome ? 'vs' : '@')} ${escapeHtml(nextGame.opponentAbbr || 'NBA')} · ${escapeHtml(formatDateTime(nextGame.gameDate))}</span>
+               </div>`
+            : `<div class="fav-next-game-bar fav-next-game-bar--empty">
+                    <span class="fav-next-label">PRÓXIMO PARTIDO</span>
+                    <span class="fav-next-value">Sin datos disponibles</span>
+               </div>`;
+
+        return `
+            <li class="fav-card fav-player-card">
+                <div class="fav-card-header">
+                    <div class="fav-player-avatar">
+                        ${avatarHtml}
+                        ${fallbackHtml}
                     </div>
-                `
-                : '<p class="favorite-meta-line">Sin estadísticas disponibles para este jugador.</p>';
-
-            const loadingStatsText = favoritesInsightsState.loading && !playerInsight
-                ? '<p class="favorite-meta-line">Buscando estadísticas del jugador...</p>'
-                : '';
-
-            return `
-                <li class="favorite-item favorite-item-detailed">
-                    <div class="favorite-item-top">
-                        <div class="favorite-main">
-                            <span class="favorite-player-badge">★</span>
-                            <span class="favorite-pill">${escapeHtml(player.name)}</span>
-                        </div>
-                        <button class="favorite-remove-btn" onclick="removeFavoriteByIndex('player', ${player.index})" aria-label="Quitar jugador favorito">&times;</button>
+                    <div class="fav-card-title">
+                        <span class="fav-player-fullname">${escapeHtml(player.name)}</span>
+                        <span class="fav-player-meta">${escapeHtml(metaParts.join(' · '))}</span>
                     </div>
-                    <div class="favorite-details">
-                        <p class="favorite-meta-line">${escapeHtml(teamText)} · Temporada ${escapeHtml(seasonText)}</p>
-                        ${loadingStatsText}
-                        ${statsHtml}
-                        <p class="favorite-next-game">${escapeHtml(nextGameText)}</p>
-                    </div>
-                </li>
-            `;
-        })
-        .join('');
+                    <button class="fav-remove-btn" onclick="removeFavoriteByIndex('player', ${player.index})" aria-label="Quitar jugador favorito">×</button>
+                </div>
+                <div class="fav-card-body">
+                    ${statsHtml}
+                </div>
+                ${nextGameHtml}
+            </li>
+        `;
+    }).join('');
 }
 
 function renderFavorites() {
