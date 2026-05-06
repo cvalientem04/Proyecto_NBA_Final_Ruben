@@ -66,11 +66,11 @@ function renderHeaderUserData() {
     if (nameElement) {
         const adminBadge = user.role === 'admin' ? ' 👑' : '';
         const safeName = _authEscapeHtml(user.username || 'Usuario');
-        const avatar = _authEscapeHtml(user.avatar || '🏀');
         const cosmetics = _getHeaderCosmetics();
-        const badgeEmoji = cosmetics.badge ? `<span style="font-size:14px">${_authEscapeHtml(cosmetics.badge)}</span> ` : '';
+        const badgeEmoji = cosmetics.badge ? `<span style="font-size:14px">${_authEscapeHtml(cosmetics.badge)}</span>` : '';
+        const prefix = badgeEmoji || _authEscapeHtml(user.avatar || '🏀');
         const colorStyle = cosmetics.color ? ` style="color:${_authEscapeHtml(cosmetics.color)}"` : '';
-        nameElement.innerHTML = `<a href="profile.html" class="user-profile-link">${avatar} ${badgeEmoji}<span${colorStyle}>${safeName}</span>${adminBadge}</a>`;
+        nameElement.innerHTML = `<a href="profile.html" class="user-profile-link">${prefix} <span${colorStyle}>${safeName}</span>${adminBadge}</a>`;
     }
 
     if (coinsElement) {

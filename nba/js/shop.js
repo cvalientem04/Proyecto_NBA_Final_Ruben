@@ -244,7 +244,7 @@ function renderInventory() {
         <div class="inventory-equipped-grid">
             <div class="inventory-equipped-slot">
                 <span class="inventory-slot-label">🎖️ Insignia</span>
-                <span class="inventory-slot-value">${equippedBadge ? escHtml(equippedBadge.icon_emoji + ' ' + equippedBadge.name) : '—'}</span>
+                <span class="inventory-slot-value">${equippedBadge ? escHtml(equippedBadge.icon_emoji + ' ' + equippedBadge.name) : '🏀 Por defecto'}</span>
                 ${equippedBadge ? `<button class="shop-btn shop-btn--sm shop-btn--ghost" onclick="unequipItem('badge')" style="margin-top:8px">Quitar</button>` : ''}
             </div>
             <div class="inventory-equipped-slot">

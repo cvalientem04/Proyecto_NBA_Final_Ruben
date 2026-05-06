@@ -54,36 +54,60 @@ CREATE INDEX IF NOT EXISTS idx_title_requests_status ON title_requests(status);
 
 -- ===== DATOS POR DEFECTO: Insignias =====
 INSERT INTO shop_items (name, description, type, price, icon_emoji) VALUES
-('Rookie',          'Muestra que eres nuevo en la comunidad NBA LIVE',              'badge', 500,  '🏀'),
-('Veterano',        'Has estado en la comunidad desde el principio',                 'badge', 1000, '💪'),
-('All-Star',        'Eres de los buenos, como los All-Stars de la NBA',              'badge', 1500, '⭐'),
-('Experto en Draft','Nadie sabe más de draft que tú',                                'badge', 2000, '📋'),
-('MVP',             'El más valioso de toda la comunidad NBA LIVE',                  'badge', 3000, '🏆'),
-('Campeón',         'La insignia más exclusiva. Solo para los mejores',             'badge', 5000, '💍'),
-('Fan Acérrimo',    'No te pierdes ni un solo partido de la temporada',             'badge', 800,  '🔥')
+('Rookie',          'Muestra que eres nuevo en la comunidad NBA LIVE',              'badge',  800, '🏀'),
+('Fan Acérrimo',    'No te pierdes ni un solo partido de la temporada',             'badge', 1500, '🔥'),
+('Veterano',        'Has estado en la comunidad desde el principio',                 'badge', 2000, '💪'),
+('All-Star',        'Eres de los buenos, como los All-Stars de la NBA',              'badge', 3000, '⭐'),
+('Experto en Draft','Nadie sabe más de draft que tú',                                'badge', 3500, '📋'),
+('MVP',             'El más valioso de toda la comunidad NBA LIVE',                  'badge', 5000, '🏆'),
+('Campeón',         'La insignia más exclusiva. Solo para los mejores',             'badge', 8000, '💍')
 ON CONFLICT (name, type) DO NOTHING;
 
 -- ===== DATOS POR DEFECTO: Colores de nombre =====
 INSERT INTO shop_items (name, description, type, price, icon_emoji, color_hex) VALUES
-('Dorado',          'Tu nombre brillará en dorado. El color del oro olímpico',     'color', 2000, '🥇', '#FFD700'),
-('Rojo NBA',        'El rojo intenso de la competición NBA',                        'color', 1000, '🔴', '#E53935'),
-('Verde Celtics',   'El verde legendario del parquet de Boston',                    'color', 1000, '💚', '#007A33'),
-('Azul Real',       'El azul de los grandes equipos históricos',                    'color', 1000, '💙', '#1565C0'),
-('Púrpura Lakers',  'El púrpura de Hollywood, de Kobe y LeBron',                   'color', 1000, '💜', '#552583'),
-('Naranja Fuego',   'Ardiente como un slam dunk en el último segundo',              'color', 1000, '🟠', '#FF6B35')
+('Rojo NBA',        'El rojo intenso de la competición NBA',                        'color', 2000, '🔴', '#E53935'),
+('Verde Celtics',   'El verde legendario del parquet de Boston',                    'color', 2000, '💚', '#007A33'),
+('Azul Real',       'El azul de los grandes equipos históricos',                    'color', 2000, '💙', '#1565C0'),
+('Púrpura Lakers',  'El púrpura de Hollywood, de Kobe y LeBron',                   'color', 2000, '💜', '#552583'),
+('Naranja Fuego',   'Ardiente como un slam dunk en el último segundo',              'color', 2000, '🟠', '#FF6B35'),
+('Dorado',          'Tu nombre brillará en dorado. El color del oro olímpico',     'color', 4000, '🥇', '#FFD700')
 ON CONFLICT (name, type) DO NOTHING;
 
 -- ===== DATOS POR DEFECTO: Marcos de avatar =====
 INSERT INTO shop_items (name, description, type, price, icon_emoji) VALUES
-('Marco Básico',   'Un marco sencillo pero elegante para tu avatar',               'frame', 500,  '🔵'),
-('Marco All-Star', 'Marco dorado del All-Star Weekend',                             'frame', 2000, '🌟'),
-('Marco MVP',      'El marco del trofeo MVP. Para los mejores jugadores',           'frame', 3000, '🏆'),
-('Marco Campeón',  'El marco del anillo de campeón. El más exclusivo de la tienda', 'frame', 5000, '💍')
+('Marco Básico',   'Un marco sencillo pero elegante para tu avatar',               'frame', 1000, '🔵'),
+('Marco All-Star', 'Marco dorado del All-Star Weekend',                             'frame', 3500, '🌟'),
+('Marco MVP',      'El marco del trofeo MVP. Para los mejores jugadores',           'frame', 5000, '🏆'),
+('Marco Campeón',  'El marco del anillo de campeón. El más exclusivo de la tienda', 'frame', 8000, '💍')
 ON CONFLICT (name, type) DO NOTHING;
 
 -- ===== DATOS POR DEFECTO: Slot de título personalizado =====
 INSERT INTO shop_items (name, description, type, price, icon_emoji) VALUES
 ('Título Personalizado',
  'Crea tu propio título único. El admin lo revisará antes de publicarlo. Puedes cambiarlo cuando quieras.',
- 'title', 5000, '✏️')
+ 'title', 7500, '✏️')
 ON CONFLICT (name, type) DO NOTHING;
+
+-- ===== ACTUALIZAR PRECIOS EN BD EXISTENTE =====
+-- Ejecutar si los items ya existen en Supabase
+UPDATE shop_items SET price =  800 WHERE name = 'Rookie'           AND type = 'badge';
+UPDATE shop_items SET price = 1500 WHERE name = 'Fan Acérrimo'     AND type = 'badge';
+UPDATE shop_items SET price = 2000 WHERE name = 'Veterano'         AND type = 'badge';
+UPDATE shop_items SET price = 3000 WHERE name = 'All-Star'         AND type = 'badge';
+UPDATE shop_items SET price = 3500 WHERE name = 'Experto en Draft' AND type = 'badge';
+UPDATE shop_items SET price = 5000 WHERE name = 'MVP'              AND type = 'badge';
+UPDATE shop_items SET price = 8000 WHERE name = 'Campeón'          AND type = 'badge';
+
+UPDATE shop_items SET price = 2000 WHERE name = 'Rojo NBA'         AND type = 'color';
+UPDATE shop_items SET price = 2000 WHERE name = 'Verde Celtics'    AND type = 'color';
+UPDATE shop_items SET price = 2000 WHERE name = 'Azul Real'        AND type = 'color';
+UPDATE shop_items SET price = 2000 WHERE name = 'Púrpura Lakers'   AND type = 'color';
+UPDATE shop_items SET price = 2000 WHERE name = 'Naranja Fuego'    AND type = 'color';
+UPDATE shop_items SET price = 4000 WHERE name = 'Dorado'           AND type = 'color';
+
+UPDATE shop_items SET price = 1000 WHERE name = 'Marco Básico'     AND type = 'frame';
+UPDATE shop_items SET price = 3500 WHERE name = 'Marco All-Star'   AND type = 'frame';
+UPDATE shop_items SET price = 5000 WHERE name = 'Marco MVP'        AND type = 'frame';
+UPDATE shop_items SET price = 8000 WHERE name = 'Marco Campeón'    AND type = 'frame';
+
+UPDATE shop_items SET price = 7500 WHERE name = 'Título Personalizado' AND type = 'title';
