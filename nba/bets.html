@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NBA LIVE - Apuestas</title>
+
+    <meta name="description" content="Apuesta tus monedas en los partidos NBA y sube al ranking de apostadores.">
+
+    <link rel="stylesheet" href="nba.css">
+
+</head>
+
+<body>
+
+    <header>
+
+        <nav>
+
+            <div class="logo"><a href="nba.html" aria-label="Ir al inicio NBA LIVE"><img src="../img/Logo.png" alt="NBA LIVE Logo"></a></div>
+
+            <ul class="nav-links">
+
+                <li><a href="nba.html">Home</a></li>
+
+                <li><a href="games.html">Games</a></li>
+
+                <li><a href="standings.html">Standings</a></li>
+
+                <li><a href="playoffs.html">Playoffs</a></li>
+
+                <li><a href="news.html">News</a></li>
+
+                <li><a href="stats.html">Steams</a></li>
+
+                <li><a href="minigames.html">MiniGames</a></li>
+
+                <li><a href="shop.html">Tienda</a></li>
+
+                <li><a href="leaderboard.html">Ranking</a></li>
+
+                <li><a href="bets.html" class="active">Apuestas</a></li>
+
+            </ul>
+
+            <div class="user-area" id="userArea">
+
+                <span class="user-coins" id="userCoins">🪙 0</span>
+
+                <span class="user-name" id="userName">�?� Usuario</span>
+
+                <a href="favorites.html" class="favorites-nav-btn">Favoritos</a>
+
+                <button class="logout-btn" onclick="logout()">Salir</button>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+
+    <div class="container">
+
+        <section id="bets-page">
+
+            <div class="section-header">
+
+                <h2 class="section-title">🎰 Apuestas</h2>
+
+            </div>
+
+            <p class="section-subtitle">Apuesta tus monedas a quién ganará. Si aciertas, ¡obtienes el doble!</p>
+
+
+
+            <!-- Tabs -->
+
+            <div class="bets-tabs">
+
+                <button class="bets-tab bets-tab--active" data-tab="open" onclick="switchBetsTab('open')">🟢 Abiertas</button>
+
+                <button class="bets-tab" data-tab="mine" onclick="switchBetsTab('mine')">📋 Mis Apuestas</button>
+
+                <button class="bets-tab" data-tab="resolved" onclick="switchBetsTab('resolved')">�?? Resueltas</button>
+
+            </div>
+
+
+
+            <!-- Tab: Eventos abiertos -->
+
+            <div id="bets-tab-open" class="bets-tab-content">
+
+                <div id="bets-open-list" class="bets-events-grid">
+
+                    <p class="bets-loading">Cargando eventos...</p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Tab: Mis apuestas -->
+
+            <div id="bets-tab-mine" class="bets-tab-content" style="display:none">
+
+                <div id="bets-mine-list" class="bets-mine-list">
+
+                    <p class="bets-loading">Cargando tus apuestas...</p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Tab: Resueltas -->
+
+            <div id="bets-tab-resolved" class="bets-tab-content" style="display:none">
+
+                <div id="bets-resolved-list" class="bets-events-grid">
+
+                    <p class="bets-loading">Cargando eventos resueltos...</p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+
+    <!-- Modal: Colocar apuesta -->
+
+    <div id="betModal" class="bets-modal" style="display:none">
+
+        <div class="bets-modal-box">
+
+            <h3 id="betModalTitle">🎰 Colocar Apuesta</h3>
+
+            <p id="betModalEvent" class="bets-modal-event"></p>
+
+            <p class="bets-modal-rule">Si aciertas recibes el <strong>doble</strong> de tu apuesta. Si fallas, pierdes las monedas.</p>
+
+
+
+            <div class="bets-modal-teams">
+
+                <button id="betChoiceA" class="bets-team-btn" onclick="selectBetChoice('team_a')"></button>
+
+                <span class="bets-vs">VS</span>
+
+                <button id="betChoiceB" class="bets-team-btn" onclick="selectBetChoice('team_b')"></button>
+
+            </div>
+
+
+
+            <div class="bets-modal-amount">
+
+                <label for="betAmount">Cantidad a apostar (mínimo 🪙 10)</label>
+
+                <div class="bets-amount-row">
+
+                    <input type="number" id="betAmount" min="10" step="10" placeholder="100" class="bets-amount-input">
+
+                    <div class="bets-quick-amounts">
+
+                        <button class="bets-quick-btn" onclick="setBetAmount(50)">50</button>
+
+                        <button class="bets-quick-btn" onclick="setBetAmount(100)">100</button>
+
+                        <button class="bets-quick-btn" onclick="setBetAmount(250)">250</button>
+
+                        <button class="bets-quick-btn" onclick="setBetAmount(500)">500</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <p id="betModalFeedback" class="bets-modal-feedback"></p>
+
+            <div class="bets-modal-actions">
+
+                <button class="bets-modal-btn bets-modal-btn--primary" onclick="confirmBet()">Apostar</button>
+
+                <button class="bets-modal-btn bets-modal-btn--ghost" onclick="closeBetModal()">Cancelar</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ===== FOOTER ===== -->
+
+    <footer class="site-footer">
+
+        <div class="site-footer-inner">
+
+            <div class="footer-brand">
+
+                <img src="../img/Logo.png" alt="NBA LIVE" class="footer-logo">
+
+                <p class="footer-tagline">&copy; 2026 NBA LIVE. Datos en vivo de ESPN y NBA CDN</p>
+
+            </div>
+
+            <div class="footer-contact-grid">
+
+                <a class="footer-contact-item" href="mailto:cvalientem04@educarex.es">
+
+                    <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>
+
+                    <span class="footer-channel">Email</span>
+
+                    <strong>cvalientem04@educarex.es</strong>
+
+                </a>
+
+                <a class="footer-contact-item" href="https://www.instagram.com/nba_live_09?igsh=MXZtZ21uZzZyNTZkcQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer">
+
+                    <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+
+                    <span class="footer-channel">Instagram</span>
+
+                    <strong>@nba_live_09</strong>
+
+                </a>
+
+                <a class="footer-contact-item" href="https://chat.whatsapp.com/BuMWRrxfNQ9BYIbJzXsJ7d" target="_blank" rel="noopener noreferrer">
+
+                    <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+
+                    <span class="footer-channel">WhatsApp</span>
+
+                    <strong>Grupo NBA LIVE</strong>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+
+    <script src="js/auth.js"></script>
+
+    <script src="js/bets.js"></script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+

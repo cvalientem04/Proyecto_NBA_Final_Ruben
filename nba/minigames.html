@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+
+
+<html lang="es">
+
+
+<head>
+
+
+    <meta charset="UTF-8">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>NBA LIVE - MiniGames</title>
+
+
+    <link rel="stylesheet" href="nba.css">
+
+
+</head>
+
+
+<body>
+
+
+    <header>
+
+
+        <nav>
+
+
+            <div class="logo"><a href="nba.html" aria-label="Ir al inicio NBA LIVE"><img src="../img/Logo.png" alt="NBA LIVE Logo"></a></div>
+
+
+            <ul class="nav-links">
+
+
+                <li><a href="nba.html">Home</a></li>
+
+
+                <li><a href="games.html">Games</a></li>
+
+
+                <li><a href="standings.html">Standings</a></li>
+
+
+                <li><a href="playoffs.html">Playoffs</a></li>
+
+
+                <li><a href="news.html">News</a></li>
+
+
+                <li><a href="stats.html">Steams</a></li>
+
+
+                <li><a href="minigames.html" class="active">MiniGames</a></li>
+
+
+                <li><a href="shop.html">Tienda</a></li>
+
+
+                <li><a href="leaderboard.html">Ranking</a></li>
+
+
+                <li><a href="bets.html">Apuestas</a></li>
+
+
+            </ul>
+
+
+            <div class="user-area" id="userArea">
+
+
+                <span class="user-coins" id="userCoins">🪙 1000</span>
+
+
+                <span class="user-name" id="userName">�?� Usuario</span>
+
+
+                <a href="favorites.html" class="favorites-nav-btn">Favoritos</a>
+
+
+                <button class="logout-btn" onclick="logout()">Salir</button>
+
+
+            </div>
+
+
+        </nav>
+
+
+    </header>
+
+
+
+
+
+    <div class="container">
+
+
+        <section id="minigames">
+
+
+            <div class="section-header">
+
+
+                <h2 class="section-title">MiniGames</h2>
+
+
+                <a class="view-all" onclick="resetMiniGames()">Reiniciar ↺</a>
+
+
+            </div>
+
+
+            <p class="section-subtitle">Elige que juego quieres abrir. Cada panel trae su propio modo y progreso.</p>
+
+
+
+
+
+            <div class="minigames-shell">
+
+
+                <aside class="minigame-selector">
+
+
+                    <h3 class="minigame-selector-title">Elige tu reto</h3>
+
+
+                    <p class="minigame-selector-copy">Selecciona un juego y entra directo. Puedes cambiar cuando quieras.</p>
+
+
+
+
+
+                    <div class="minigame-selector-buttons">
+
+
+                        <button id="minigame-tab-trivia" class="minigame-tab active" type="button" onclick="selectMiniGame('trivia')">Trivia Live</button>
+
+
+                        <button id="minigame-tab-guess" class="minigame-tab" type="button" onclick="selectMiniGame('guess')">Guess The Team</button>
+
+
+                        <button id="minigame-tab-hangman" class="minigame-tab" type="button" onclick="selectMiniGame('hangman')">Ahorcado NBA</button>
+
+
+                    </div>
+
+
+
+
+
+                    <div class="minigame-selector-footer">
+
+
+                        <span>Reto activo</span>
+
+
+                        <strong id="minigame-active-label">Trivia Live</strong>
+
+
+                    </div>
+
+
+                </aside>
+
+
+
+
+
+                <div class="minigame-stage">
+
+
+                    <article id="minigame-panel-trivia" class="minigame-panel active">
+
+
+                        <h3>Trivia Live</h3>
+
+
+                        <p class="minigame-description">Preguntas NBA con mezcla de base local y datos actuales de API.</p>
+
+
+                        <p id="trivia-score" class="minigame-score">Aciertos: 0</p>
+
+
+                        <p id="trivia-source" class="minigame-meta">Fuente: preguntas iniciales</p>
+
+
+                        <p id="trivia-question" class="minigame-question">Cargando pregunta...</p>
+
+
+                        <div id="trivia-options" class="trivia-options"></div>
+
+
+                        <p id="trivia-feedback" class="minigame-feedback"></p>
+
+
+                        <div class="minigame-actions">
+
+
+                            <button class="minigame-btn" type="button" onclick="nextTriviaQuestion()">Nueva pregunta</button>
+
+
+                        </div>
+
+
+                    </article>
+
+
+
+
+
+                    <article id="minigame-panel-guess" class="minigame-panel">
+
+
+                        <h3>Guess The Team</h3>
+
+
+                        <p class="minigame-description">Adivina el equipo correcto segun abreviatura o ciudad.</p>
+
+
+                        <p id="guess-team-score" class="minigame-score">Aciertos: 0</p>
+
+
+                        <p id="guess-team-streak" class="minigame-meta">Racha: 0</p>
+
+
+                        <div class="guess-prompt">
+
+
+                            <span id="guess-team-abbr" class="guess-abbr">NBA</span>
+
+
+                        </div>
+
+
+                        <div id="guess-team-options" class="trivia-options"></div>
+
+
+                        <p id="guess-team-feedback" class="minigame-feedback"></p>
+
+
+                        <div class="minigame-actions">
+
+
+                            <button class="minigame-btn" type="button" onclick="nextGuessTeamRound()">Siguiente ronda</button>
+
+
+                        </div>
+
+
+                    </article>
+
+
+
+
+
+                    <article id="minigame-panel-hangman" class="minigame-panel">
+
+
+                        <h3>Ahorcado NBA</h3>
+
+
+                        <p class="minigame-description">Version simple: adivina letra por letra y completa la palabra antes de quedarte sin vidas.</p>
+
+
+                        <p id="hangman-score" class="minigame-score">Victorias: 0</p>
+
+
+
+
+
+                        <div class="hangman-mode-switch">
+
+
+                            <button id="hangman-mode-team-btn" class="hangman-mode-btn active" type="button" onclick="setHangmanMode('team')">Adivinar equipo</button>
+
+
+                            <button id="hangman-mode-player-btn" class="hangman-mode-btn" type="button" onclick="setHangmanMode('player')">Adivinar jugador</button>
+
+
+                        </div>
+
+
+
+
+
+                        <p id="hangman-mode-description" class="minigame-meta">Modo equipo: adivina el nombre del equipo.</p>
+
+
+                        <div id="hangman-word-display" class="hangman-word-display"></div>
+
+
+                        <div class="hangman-status">
+
+
+                            <span id="hangman-lives" class="hangman-lives">Vidas: 6</span>
+
+
+                            <span id="hangman-used-letters" class="hangman-used-letters">Letras usadas: -</span>
+
+
+                        </div>
+
+
+
+
+
+                        <div class="hangman-controls">
+
+
+                            <input id="hangman-letter-input" class="hangman-input hangman-input-letter" type="text" maxlength="1" placeholder="Letra" autocomplete="off" spellcheck="false">
+
+
+                            <button class="minigame-btn" type="button" onclick="submitHangmanLetter()">Probar letra</button>
+
+
+                        </div>
+
+
+
+
+
+                        <div class="hangman-controls">
+
+
+                            <input id="hangman-word-input" class="hangman-input" type="text" maxlength="8" placeholder="Adivina la palabra completa" autocomplete="off" spellcheck="false">
+
+
+                            <button class="minigame-btn secondary" type="button" onclick="submitHangmanWord()">Adivinar palabra</button>
+
+
+                        </div>
+
+
+
+
+
+                        <div class="hangman-hint-actions">
+
+
+                            <button class="minigame-btn secondary" type="button" onclick="requestHangmanHint('soft')">Pista suave</button>
+
+
+                            <button class="minigame-btn secondary" type="button" onclick="requestHangmanHint('deep')">Pista detallada</button>
+
+
+                            <button class="minigame-btn" type="button" onclick="resetHangmanGame()">Nueva palabra</button>
+
+
+                        </div>
+
+
+
+
+
+                        <p id="hangman-hint-text" class="hangman-hint-text"></p>
+
+
+                        <p id="hangman-feedback" class="minigame-feedback"></p>
+
+
+                    </article>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </div>
+
+
+
+
+
+    <!-- ===== FOOTER DE CONTACTO ===== -->
+
+
+    <footer class="site-footer">
+
+
+        <div class="site-footer-inner">
+
+
+            <div class="footer-brand">
+
+
+                <img src="../img/Logo.png" alt="NBA LIVE" class="footer-logo">
+
+
+                <p class="footer-tagline">&copy; 2026 NBA LIVE. Datos en vivo de ESPN y NBA CDN</p>
+
+
+            </div>
+
+
+            <div class="footer-contact-grid">
+
+
+                <a class="footer-contact-item" href="mailto:cvalientem04@educarex.es">
+
+
+                    <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>
+
+
+                    <span class="footer-channel">Email</span>
+
+
+                    <strong>cvalientem04@educarex.es</strong>
+
+
+                </a>
+
+
+                <a class="footer-contact-item" href="https://www.instagram.com/nba_live_09?igsh=MXZtZ21uZzZyNTZkcQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer">
+
+
+                    <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+
+
+                    <span class="footer-channel">Instagram</span>
+
+
+                    <strong>@nba_live_09</strong>
+
+
+                </a>
+
+
+                <a class="footer-contact-item" href="https://chat.whatsapp.com/BuMWRrxfNQ9BYIbJzXsJ7d" target="_blank" rel="noopener noreferrer">
+
+
+                    <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+
+
+                    <span class="footer-channel">WhatsApp</span>
+
+
+                    <strong>Grupo NBA LIVE</strong>
+
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+
+    </footer>
+
+
+
+
+
+    <script src="js/auth.js"></script>
+
+
+    <script src="js/favoritos.js"></script>
+
+
+    <script src="js/minijuegos.js"></script>
+
+
+    <script src="js/script.js"></script>
+
+
+</body>
+
+
+</html>
+
+
+
+
+
+
+
+

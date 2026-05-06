@@ -3,123 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basketball League - Noticias y Resultados</title>
+    <title>NBA LIVE - Home</title>
+    <meta name="description" content="NBA LIVE Hub — tu temporada NBA completa con partidos en vivo, standings, playoffs, noticias, minijuegos y comunidad.">
     <link rel="stylesheet" href="nba.css">
 </head>
 <body>
     <header>
         <nav>
-            <div class="logo">NBA LIVE</div>
+            <div class="logo"><a href="nba.html" aria-label="Ir al inicio NBA LIVE"><img src="../img/Logo.png" alt="NBA LIVE Logo"></a></div>
             <ul class="nav-links">
-                <li><a href="#scores">Scores</a></li>
-                <li><a href="#news">News</a></li>
-                <li><a href="#stats">Stats</a></li>
-                <li><a href="#standings">Standings</a></li>
-                <li><a href="#schedule">Schedule</a></li>
+                <li><a href="nba.html" class="active">Home</a></li>
+                <li><a href="games.html">Games</a></li>
+                <li><a href="standings.html">Standings</a></li>
+                <li><a href="playoffs.html">Playoffs</a></li>
+                <li><a href="news.html">News</a></li>
+                <li><a href="stats.html">Steams</a></li>
+                <li><a href="minigames.html">MiniGames</a></li>
+                <li><a href="shop.html">Tienda</a></li>
+                <li><a href="leaderboard.html">Ranking</a></li>
+                <li><a href="bets.html">Apuestas</a></li>
             </ul>
             <div class="user-area" id="userArea">
                 <span class="user-coins" id="userCoins">🪙 1000</span>
                 <span class="user-name" id="userName">🏀 Usuario</span>
+                <a href="favorites.html" class="favorites-nav-btn">Favoritos</a>
                 <button class="logout-btn" onclick="logout()">Salir</button>
             </div>
         </nav>
     </header>
 
     <div class="container">
-        <!-- API Key Input -->
-        
-
-        <section class="hero">
+        <!-- ===== HERO ===== -->
+        <section id="home" class="hero">
             <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1600&h=900&fit=crop" alt="Basketball Hero" class="hero-image">
-            <!--<div class="basketball" style="right: 15%; top: 40%; animation-delay: 0.5s;"></div>-->
-
             <div class="hero-content">
-                <span class="hero-tag">Featured Story</span>
-                <h1 class="hero-title">Power Rankings: Week 5 - Teams Making Moves in Top 10</h1>
-                <p class="hero-description">The top spots remain competitive as several teams show impressive performance and climb the rankings with outstanding plays.</p>
-            </div>
-        </section>
-
-        <section id="scores">
-            <div class="section-header">
-                <h2 class="section-title">Partidos NBA - En Vivo</h2>
-                <a class="view-all" onclick="loadGames()">Actualizar ↻</a>
-            </div>
-            <div class="scores-container">
-                <div id="games-container">
-                    <div class="loading">Configura tu API Key para ver los partidos en vivo...</div>
+                <div class="hero-live-badge"><span class="hero-live-dot"></span> EN DIRECTO</div>
+                <h1 class="hero-title">Tu temporada NBA completa: Regular Season, Playoffs y Comunidad</h1>
+                <p class="hero-description">Sigue partidos en vivo, clasificación, noticias, equipos, minijuegos y favoritos desde una sola plataforma.</p>
+                <div class="hero-actions">
+                    <a href="games.html" class="hero-action-btn">🏀 Ver Games</a>
+                    <a href="playoffs.html" class="hero-action-btn secondary">🏆 Seguir Playoffs</a>
                 </div>
             </div>
         </section>
 
-        <section id="news">
-            <div class="section-header">
-                <h2 class="section-title">Latest News</h2>
-                <a class="view-all" onclick="loadNews()">Actualizar ↻</a>
+        <!-- ===== SECCIONES ===== -->
+        <section class="home-sections">
+            <div class="home-sections-header">
+                <h2>Explora NBA LIVE</h2>
+                <p>Todo lo que necesitas sobre la temporada NBA en un solo lugar.</p>
             </div>
-            <div class="news-grid" id="news-container">
-                <div class="loading">Cargando noticias de ESPN...</div>
+
+            <div class="home-sections-group">
+                <span class="home-group-label">EN DIRECTO</span>
+                <div class="home-links-grid home-links-grid--live">
+                    <a href="games.html" class="home-link-card" data-section="games" data-tag="EN VIVO">
+                        <span class="home-card-icon">🏀</span>
+                        <h3>Games</h3>
+                        <p>Partidos en vivo y estadísticas de jugadores en cada partido.</p>
+                    </a>
+                    <a href="standings.html" class="home-link-card" data-section="standings" data-tag="TEMPORADA">
+                        <span class="home-card-icon">📊</span>
+                        <h3>Standings</h3>
+                        <p>Clasificación completa de la Conferencia Este y Oeste.</p>
+                    </a>
+                    <a href="playoffs.html" class="home-link-card" data-section="playoffs" data-tag="PLAYOFFS">
+                        <span class="home-card-icon">🏆</span>
+                        <h3>Playoffs</h3>
+                        <p>Cuadro de playoffs con cruces por conferencia y resultados reales.</p>
+                    </a>
+                    <a href="news.html" class="home-link-card" data-section="news" data-tag="ESPN">
+                        <span class="home-card-icon">📰</span>
+                        <h3>News</h3>
+                        <p>Noticias frescas de ESPN sobre la NBA.</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="home-sections-group">
+                <span class="home-group-label">TU ESPACIO</span>
+                <div class="home-links-grid home-links-grid--personal">
+                    <a href="stats.html" class="home-link-card" data-section="steams" data-tag="ESTADÍSTICAS">
+                        <span class="home-card-icon">🎯</span>
+                        <h3>Steams</h3>
+                        <p>Explora los 30 equipos y consulta jugadores con sus estadísticas.</p>
+                    </a>
+                    <a href="minigames.html" class="home-link-card" data-section="minigames" data-tag="GANA MONEDAS">
+                        <span class="home-card-icon">🎮</span>
+                        <h3>MiniGames</h3>
+                        <p>Trivia, Guess The Team y Ahorcado NBA para ganar monedas.</p>
+                    </a>
+                    <a href="favorites.html" class="home-link-card" data-section="favorites" data-tag="PERSONAL">
+                        <span class="home-card-icon">❤️</span>
+                        <h3>Favoritos</h3>
+                        <p>Guarda y consulta tus equipos y jugadores favoritos.</p>
+                    </a>
+                    <a href="admin.html" class="home-link-card home-link-card--admin" id="adminHomeCard" data-section="admin" data-tag="ADMIN" style="display:none">
+                        <span class="home-card-icon">👑</span>
+                        <h3>Panel Admin</h3>
+                        <p>Modera reseñas, gestiona usuarios y controla las monedas.</p>
+                    </a>
+                </div>
             </div>
         </section>
 
-        <section id="standings">
-            <div class="section-header">
-                <h2 class="section-title">Clasificación NBA 2025-26</h2>
-                <a class="view-all" onclick="loadStandings()">Actualizar ↻</a>
-            </div>
-            <div class="standings-container">
-                <div class="standings-conference" id="east-standings">
-                    <h3>🏀 Conferencia Este</h3>
-                    <div class="loading">Cargando clasificación...</div>
-                </div>
-                <div class="standings-conference" id="west-standings">
-                    <h3>🏀 Conferencia Oeste</h3>
-                    <div class="loading">Cargando clasificación...</div>
+        <!-- ===== BANNER DE RESEÑAS ===== -->
+        <section class="reviews-banner" id="reviews-banner">
+            <div class="reviews-banner-left">
+                <span class="reviews-banner-avg" id="home-reviews-avg">0.0</span>
+                <div class="reviews-banner-info">
+                    <div class="reviews-banner-stars" id="home-reviews-stars">☆☆☆☆☆</div>
+                    <h3>Reseñas de la comunidad</h3>
+                    <p id="home-reviews-count">0 reseñas</p>
                 </div>
             </div>
+            <a href="reviews.html" class="reviews-banner-cta">Ver y dejar reseñas ⭐</a>
         </section>
     </div>
 
-    <!-- Modal de Stats de Jugadores -->
-    <div id="stats-modal" class="stats-modal">
-        <div class="stats-modal-content">
-            <span class="close-modal" onclick="closeStatsModal()">&times;</span>
-            <div id="stats-modal-header">
-                <h2>Estadísticas del Partido</h2>
+    <!-- ===== FOOTER DE CONTACTO ===== -->
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <div class="footer-brand">
+                <img src="../img/Logo.png" alt="NBA LIVE" class="footer-logo">
+                <p class="footer-tagline">&copy; 2026 NBA LIVE. Datos en vivo de ESPN y NBA CDN</p>
             </div>
-            <div id="stats-modal-body">
-                <div class="loading">Cargando estadísticas...</div>
+            <div class="footer-contact-grid">
+                <a class="footer-contact-item" href="mailto:cvalientem04@educarex.es">
+                    <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>
+                    <span class="footer-channel">Email</span>
+                    <strong>cvalientem04@educarex.es</strong>
+                </a>
+                <a class="footer-contact-item" href="https://www.instagram.com/nba_live_09?igsh=MXZtZ21uZzZyNTZkcQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer">
+                    <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+                    <span class="footer-channel">Instagram</span>
+                    <strong>@nba_live_09</strong>
+                </a>
+                <a class="footer-contact-item" href="https://chat.whatsapp.com/BuMWRrxfNQ9BYIbJzXsJ7d" target="_blank" rel="noopener noreferrer">
+                    <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+                    <span class="footer-channel">WhatsApp</span>
+                    <strong>Grupo NBA LIVE</strong>
+                </a>
             </div>
         </div>
-    </div>
-
-    <footer>
-        <p>&copy; 2025 Basketball League. Noticias | Datos en vivo de BallDontLie API</p>
     </footer>
+
+    <script src="js/auth.js"></script>
+    <script src="js/utilidades.js"></script>
+    <script src="js/home-community.js"></script>
+    <script src="js/script.js"></script>
+
+    <!-- Banner de reseñas: carga media y estrellas desde la API -->
     <script>
-        // ============ PROTECCIÓN DE LOGIN ============
-        // Verificar que el usuario esté logueado
-        const token = localStorage.getItem('nba_token');
-        const userData = localStorage.getItem('nba_user');
+    (async function() {
+        try {
+            const response = await fetch('http://localhost:3000/api/reviews');
+            if (!response.ok) return;
+            const data = await response.json();
+            const reviews = Array.isArray(data.reviews) ? data.reviews : [];
+            if (reviews.length === 0) return;
 
-        if (!token || !userData) {
-            window.location.href = 'login.html';
-        } else {
-            // Mostrar datos del usuario en la barra
-            const user = JSON.parse(userData);
-            document.getElementById('userName').textContent = `${user.avatar || '🏀'} ${user.username}`;
-            document.getElementById('userCoins').textContent = `🪙 ${user.coins || 0}`;
-        }
+            const total = reviews.length;
+            const sum = reviews.reduce(function(a, r) { return a + Number(r.rating || 0); }, 0);
+            const avg = (sum / total).toFixed(1);
+            const full = Math.round(sum / total);
+            const stars = '★★★★★'.slice(0, full) + '☆☆☆☆☆'.slice(0, 5 - full);
 
-        function logout() {
-            localStorage.removeItem('nba_token');
-            localStorage.removeItem('nba_user');
-            window.location.href = 'login.html';
-        }
+            var el;
+            el = document.getElementById('home-reviews-avg');
+            if (el) el.textContent = avg;
+            el = document.getElementById('home-reviews-stars');
+            if (el) el.textContent = stars;
+            el = document.getElementById('home-reviews-count');
+            if (el) el.textContent = total + (total === 1 ? ' reseña' : ' reseñas');
+        } catch(e) { console.error('Error cargando banner reseñas:', e); }
+    })();
     </script>
-    <script src="nba.js"></script>
-    
-    <!-- Landbot Chatbot Widget -->
+
     <script SameSite="None; Secure" src="https://static.landbot.io/landbot-3/landbot-3.0.0.js"></script>
     <script>
       var myLandbot = new Landbot.Livechat({

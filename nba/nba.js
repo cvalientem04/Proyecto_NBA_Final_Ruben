@@ -1,6 +1,16 @@
 // URL del servidor (cambia a tu dominio en producción)
 const API_SERVER = 'http://localhost:3000';
 
+// Convertir formato ISO 8601 (PT33M25.50S) a formato legible (33:25)
+function formatMinutes(isoMinutes) {
+    if (!isoMinutes || typeof isoMinutes !== 'string') return '-';
+    const match = isoMinutes.match(/PT(\d+)M([\d.]+)S/);
+    if (!match) return isoMinutes; // Si no es ISO, devolver tal cual
+    const mins = match[1];
+    const secs = Math.floor(parseFloat(match[2]));
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
 // ============ MARCADORES EN VIVO (ESPN) ============
 
 // Cargar partidos de ESPN (tiempo real)
@@ -142,6 +152,10 @@ function renderESPNGames(events) {
 
 // ============ STATS DE JUGADORES (NBA CDN EN VIVO + BALLDONTLIE) ============
 
+// Control para evitar llamadas duplicadas al abrir stats
+let _statsLoading = false;
+let _currentStatsKey = null;
+
 // Mapa de abreviaturas ESPN -> NBA CDN (las que difieren)
 const espnToNbaMap = {
     'WSH': 'WAS',  // Washington
@@ -166,14 +180,25 @@ function toNbaAbbr(espnAbbr) {
 
 // Abrir modal de stats - intenta primero NBA CDN (en vivo), luego BallDontLie
 async function openStatsModal(date, team1, team2, team1Name, team2Name) {
+    const gameKey = `${date}_${team1}_${team2}`;
+
+    // Si ya está cargando este mismo partido, ignorar el click
+    if (_statsLoading) return;
+
+    // Si el modal ya tiene los datos de este partido, solo reabrirlo
     const modal = document.getElementById('stats-modal');
+    if (gameKey === _currentStatsKey && modal.style.display === 'flex') return;
+
+    _statsLoading = true;
+    _currentStatsKey = gameKey;
+
     const modalHeader = document.getElementById('stats-modal-header');
     const modalBody = document.getElementById('stats-modal-body');
-    
+
     modal.style.display = 'flex';
     modalHeader.innerHTML = `<h2>${team2Name} vs ${team1Name}</h2><p>Estadísticas de Jugadores</p>`;
     modalBody.innerHTML = '<div class="loading">Buscando estadísticas en vivo...</div>';
-    
+
     try {
         // 1. Primero intentar obtener stats en vivo de NBA CDN
         const nbaGameId = await findNBAGameId(team1, team2);
@@ -227,7 +252,7 @@ async function openStatsModal(date, team1, team2, team1Name, team2Name) {
         }
         
         renderPlayerStats(statsData.data, team1, team2, team1Name, team2Name);
-        
+
     } catch (error) {
         console.error('Error cargando stats:', error);
         modalBody.innerHTML = `
@@ -236,6 +261,8 @@ async function openStatsModal(date, team1, team2, team1Name, team2Name) {
                 <p>${error.message}</p>
             </div>
         `;
+    } finally {
+        _statsLoading = false;
     }
 }
 
@@ -328,7 +355,7 @@ function renderNBALiveStats(game) {
                             return `
                                 <tr class="${p.oncourt === '1' ? 'on-court' : ''}">
                                     <td class="player-name">${p.name}${p.oncourt === '1' ? ' 🏃' : ''}</td>
-                                    <td>${s.minutes || '-'}</td>
+                                    <td>${formatMinutes(s.minutes)}</td>
                                     <td class="highlight">${s.points}</td>
                                     <td>${s.reboundsTotal}</td>
                                     <td>${s.assists}</td>
@@ -366,7 +393,7 @@ function renderNBALiveStats(game) {
                             return `
                                 <tr class="${p.oncourt === '1' ? 'on-court' : ''}">
                                     <td class="player-name">${p.name}${p.oncourt === '1' ? ' 🏃' : ''}</td>
-                                    <td>${s.minutes || '-'}</td>
+                                    <td>${formatMinutes(s.minutes)}</td>
                                     <td class="highlight">${s.points}</td>
                                     <td>${s.reboundsTotal}</td>
                                     <td>${s.assists}</td>

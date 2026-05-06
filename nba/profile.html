@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA LIVE - Mi Perfil</title>
+    <link rel="stylesheet" href="nba.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"><a href="nba.html" aria-label="Ir al inicio NBA LIVE"><img src="../img/Logo.png" alt="NBA LIVE Logo"></a></div>
+            <ul class="nav-links">
+                <li><a href="nba.html">Home</a></li>
+                <li><a href="games.html">Games</a></li>
+                <li><a href="standings.html">Standings</a></li>
+                <li><a href="playoffs.html">Playoffs</a></li>
+                <li><a href="news.html">News</a></li>
+                <li><a href="stats.html">Steams</a></li>
+                <li><a href="minigames.html">MiniGames</a></li>
+                <li><a href="shop.html">Tienda</a></li>
+                <li><a href="leaderboard.html">Ranking</a></li>
+                <li><a href="bets.html">Apuestas</a></li>
+            </ul>
+            <div class="user-area" id="userArea">
+                <span class="user-coins" id="userCoins">🪙 0</span>
+                <span class="user-name" id="userName">�?� Usuario</span>
+                <a href="favorites.html" class="favorites-nav-btn">Favoritos</a>
+                <button class="logout-btn" onclick="logout()">Salir</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section id="profile-page">
+            <h2 class="section-title">👤 Mi Perfil</h2>
+
+            <div class="profile-grid">
+                <!-- Info del usuario -->
+                <div class="profile-info-card">
+                    <div class="profile-avatar" id="profileAvatar">�?�</div>
+                    <div class="profile-details">
+                        <div class="profile-detail-row">
+                            <span class="profile-detail-label">Usuario</span>
+                            <span class="profile-detail-value" id="profileUsername">—</span>
+                        </div>
+                        <div class="profile-detail-row">
+                            <span class="profile-detail-label">Email</span>
+                            <span class="profile-detail-value" id="profileEmail">—</span>
+                        </div>
+                        <div class="profile-detail-row">
+                            <span class="profile-detail-label">Monedas</span>
+                            <span class="profile-detail-value" id="profileCoins">🪙 0</span>
+                        </div>
+                        <div class="profile-detail-row">
+                            <span class="profile-detail-label">Rol</span>
+                            <span class="profile-detail-value" id="profileRole">—</span>
+                        </div>
+                        <div class="profile-detail-row">
+                            <span class="profile-detail-label">Miembro desde</span>
+                            <span class="profile-detail-value" id="profileSince">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cambiar contraseña -->
+                <div class="profile-password-card">
+                    <h3>🔒 Cambiar Contraseña</h3>
+                    <form id="passwordForm" class="community-form" novalidate>
+                        <div class="community-field">
+                            <label for="currentPassword">Contraseña actual</label>
+                            <input id="currentPassword" type="password" placeholder="Tu contraseña actual" required autocomplete="current-password">
+                        </div>
+                        <div class="community-field">
+                            <label for="newPassword">Nueva contraseña</label>
+                            <input id="newPassword" type="password" placeholder="Mínimo 6 caracteres" required autocomplete="new-password">
+                        </div>
+                        <div class="community-field">
+                            <label for="confirmNewPassword">Confirmar nueva contraseña</label>
+                            <input id="confirmNewPassword" type="password" placeholder="Repite la nueva contraseña" required autocomplete="new-password">
+                        </div>
+                        <button type="submit" class="community-submit-btn">Guardar contraseña</button>
+                        <p id="passwordFeedback" class="community-feedback"></p>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Sección de cosméticos -->
+            <div class="profile-cosmetics-card" id="profileCosmeticsCard">
+                <h3>✨ Mi Apariencia</h3>
+                <div class="profile-cosmetics-preview">
+                    <div class="profile-preview-avatar" id="previewAvatar">�?�</div>
+                    <div class="profile-preview-info">
+                        <div class="profile-preview-name">
+                            <span class="profile-preview-badge" id="previewBadge"></span>
+                            <span id="previewUsername" style="color:#fff">Usuario</span>
+                        </div>
+                        <div class="profile-preview-title" id="previewTitle"></div>
+                    </div>
+                </div>
+                <div class="profile-cosmetics-slots">
+                    <div class="profile-cosmetic-slot">
+                        <span class="profile-cosmetic-slot-label">🎖�? Insignia</span>
+                        <span id="cosmeticBadge">—</span>
+                    </div>
+                    <div class="profile-cosmetic-slot">
+                        <span class="profile-cosmetic-slot-label">🎨 Color de nombre</span>
+                        <span id="cosmeticColor">—</span>
+                    </div>
+                    <div class="profile-cosmetic-slot">
+                        <span class="profile-cosmetic-slot-label">🖼�? Marco</span>
+                        <span id="cosmeticFrame">—</span>
+                    </div>
+                    <div class="profile-cosmetic-slot">
+                        <span class="profile-cosmetic-slot-label">�?�? Título</span>
+                        <span id="cosmeticTitle">—</span>
+                    </div>
+                </div>
+                <a href="shop.html" style="display:inline-block;text-decoration:none;background:#e03a3e;color:#fff;padding:10px 24px;border-radius:8px;font-weight:700;font-size:13px;transition:background 0.2s" onmouseover="this.style.background='#c42f33'" onmouseout="this.style.background='#e03a3e'">
+                    �?�? Ir a la Tienda
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <div class="footer-brand">
+                <img src="../img/Logo.png" alt="NBA LIVE" class="footer-logo">
+                <p class="footer-tagline">&copy; 2026 NBA LIVE. Datos en vivo de ESPN y NBA CDN</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/auth.js"></script>
+    <script>
+    const PROFILE_API = 'http://localhost:3000';
+
+    function setFeedback(msg, type) {
+        const el = document.getElementById('passwordFeedback');
+        if (!el) return;
+        el.textContent = msg;
+        el.className = `community-feedback${type ? ' ' + type : ''}`;
+    }
+
+    async function loadProfile() {
+        try {
+            const token = localStorage.getItem('nba_token');
+            const res = await fetch(`${PROFILE_API}/api/profile`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!res.ok) throw new Error('No se pudo cargar el perfil');
+            const data = await res.json();
+            const u = data.user;
+
+            document.getElementById('profileAvatar').textContent = u.avatar || '�?�';
+            document.getElementById('profileUsername').textContent = u.username || '—';
+            document.getElementById('profileEmail').textContent = u.email || '—';
+            document.getElementById('profileCoins').textContent = `🪙 ${u.coins ?? 0}`;
+            document.getElementById('profileRole').textContent = u.role === 'admin' ? '👑 Administrador' : '👤 Usuario';
+            document.getElementById('profileSince').textContent = u.created_at
+                ? new Date(u.created_at).toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' })
+                : '—';
+        } catch (err) {
+            console.error('Error cargando perfil:', err);
+        }
+    }
+
+    document.getElementById('passwordForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+
+        if (!currentPassword || !newPassword || !confirmNewPassword) {
+            setFeedback('Rellena todos los campos.', 'error');
+            return;
+        }
+        if (newPassword.length < 6) {
+            setFeedback('La nueva contraseña debe tener al menos 6 caracteres.', 'error');
+            return;
+        }
+        if (newPassword !== confirmNewPassword) {
+            setFeedback('Las contraseñas nuevas no coinciden.', 'error');
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('nba_token');
+            const res = await fetch(`${PROFILE_API}/api/users/password`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ currentPassword, newPassword })
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Error al cambiar la contraseña');
+            setFeedback('✅ ' + data.message, 'success');
+            document.getElementById('passwordForm').reset();
+        } catch (err) {
+            setFeedback(`Error: ${err.message}`, 'error');
+        }
+    });
+
+    async function loadCosmetics() {
+        try {
+            const token = localStorage.getItem('nba_token');
+            const res = await fetch(`${PROFILE_API}/api/shop/inventory`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!res.ok) return;
+            const data = await res.json();
+            const cosmetics = data.cosmetics;
+            const inventory = data.inventory || [];
+            const user = window.getCurrentUserFromStorage?.() || {};
+
+            const previewAvatar = document.getElementById('previewAvatar');
+            const previewBadge = document.getElementById('previewBadge');
+            const previewUsername = document.getElementById('previewUsername');
+            const previewTitle = document.getElementById('previewTitle');
+
+            if (previewAvatar) previewAvatar.textContent = user.avatar || '�?�';
+            if (previewUsername) previewUsername.textContent = user.username || '—';
+
+            if (cosmetics) {
+                const badge = inventory.find(i => i.id === cosmetics.equipped_badge_id);
+                const color = inventory.find(i => i.id === cosmetics.equipped_color_id);
+                const frame = inventory.find(i => i.id === cosmetics.equipped_frame_id);
+
+                if (previewBadge) previewBadge.textContent = badge?.icon_emoji || '';
+                if (previewUsername && color?.color_hex) previewUsername.style.color = color.color_hex;
+                if (previewTitle && cosmetics.active_title) previewTitle.textContent = '"' + cosmetics.active_title + '"';
+
+                if (previewAvatar && frame) {
+                    const frameMap = {
+                        'Marco Básico':   { border: '4px solid #1565C0', shadow: '' },
+                        'Marco All-Star': { border: '4px solid #FFD700', shadow: '0 0 14px rgba(255,215,0,0.5)' },
+                        'Marco MVP':      { border: '4px solid #e03a3e', shadow: '0 0 14px rgba(224,58,62,0.5)' },
+                        'Marco Campeón':  { border: '4px solid #FFD700', shadow: '0 0 20px rgba(255,215,0,0.7)' }
+                    };
+                    const style = frameMap[frame.name] || { border: '4px solid #555', shadow: '' };
+                    previewAvatar.style.border = style.border;
+                    if (style.shadow) previewAvatar.style.boxShadow = style.shadow;
+                }
+
+                const el = id => document.getElementById(id);
+                if (el('cosmeticBadge')) el('cosmeticBadge').textContent = badge ? badge.icon_emoji + ' ' + badge.name : '—';
+                if (el('cosmeticColor')) {
+                    el('cosmeticColor').textContent = color?.name || '—';
+                    if (color?.color_hex) el('cosmeticColor').style.color = color.color_hex;
+                }
+                if (el('cosmeticFrame')) el('cosmeticFrame').textContent = frame ? frame.icon_emoji + ' ' + frame.name : '—';
+                if (el('cosmeticTitle')) el('cosmeticTitle').textContent = cosmetics.active_title ? '"' + cosmetics.active_title + '"' : '—';
+            }
+        } catch (err) {
+            console.error('Error cargando cosméticos:', err);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initAuth();
+        loadProfile();
+        loadCosmetics();
+    });
+    </script>
+</body>
+</html>
+
+

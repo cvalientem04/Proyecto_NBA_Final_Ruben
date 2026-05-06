@@ -1,26 +1,22 @@
-const Database = require('better-sqlite3');
-const path = require('path');
+const { Pool } = require('pg');
+require('dotenv').config();
 
-// Crear/conectar base de datos
-const db = new Database(path.join(__dirname, 'users.db'));
+// Crear el pool de conexiones a Supabase
+const db = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false // Necesario para algunas conexiones a Supabase si no tienes el certificado local
+    }
+});
 
-// Activar WAL mode para mejor rendimiento
-db.pragma('journal_mode = WAL');
-
-// Crear tabla de usuarios si no existe
-db.exec(`
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT UNIQUE NOT NULL,
-        email TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL,
-        plan TEXT DEFAULT 'free',
-        coins INTEGER DEFAULT 1000,
-        avatar TEXT DEFAULT '🏀',
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-`);
-
-console.log('✅ Base de datos inicializada correctamente');
+// Probar la conexión
+db.connect((err, client, release) => {
+    if (err) {
+        console.error('❌ Error al conectar con Supabase:', err.stack);
+    } else {
+        console.log('✅ Conectado a la base de datos Supabase correctamente');
+        release();
+    }
+});
 
 module.exports = db;

@@ -1,0 +1,24 @@
+services:
+  # 1. El servidor Backend (Node.js)
+  backend:
+    build: 
+      context: ./nba-server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      # Pones aquí tus variables de entorno necesarias
+      - PORT=3000
+    env_file:
+      - ./nba-server/.env
+
+  # 2. El servidor Frontend (La página web)
+  frontend:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      # Monta todos los archivos HTML/CSS/JS de la raíz en la carpeta de Nginx
+      - ./:/usr/share/nginx/html
+    depends_on:
+      - backend
