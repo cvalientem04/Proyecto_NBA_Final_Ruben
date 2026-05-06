@@ -3,7 +3,17 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 require('dotenv').config();
+
+const mailer = nodemailer.createTransport({
+    service: 'gmail',
+    auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_PASS }
+});
+
+async function sendEmail(to, subject, html) {
+    await mailer.sendMail({ from: `"NBA LIVE" <${process.env.GMAIL_USER}>`, to, subject, html });
+}
 
 // Importar base de datos
 const db = require('./database');
@@ -314,6 +324,27 @@ function requireAdmin(req, res, next) {
 }
 
 // ============ REGISTRO (SIGN UP) ============
+// Helper: enviar email de verificación
+async function sendVerificationEmail(userId, username, email) {
+    const crypto = require('crypto');
+    const token = crypto.randomBytes(32).toString('hex');
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24h
+    await db.query(
+        'INSERT INTO email_verification_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)',
+        [userId, token, expiresAt]
+    );
+    const frontendUrl = process.env.FRONTEND_URL || 'http://127.0.0.1:5502/nba';
+    const verifyLink = `${frontendUrl}/verify-email.html?token=${token}`;
+    await sendEmail(email, '🏀 NBA LIVE — Verifica tu email',
+        `<div style="font-family:sans-serif;max-width:480px;margin:auto;background:#1d1d1d;color:#fff;border-radius:12px;padding:32px">
+            <h1 style="color:#e03a3e;margin-bottom:8px">NBA LIVE</h1>
+            <p>Hola <strong>${username}</strong>,</p>
+            <p>Gracias por registrarte. Haz clic en el botón para verificar tu email y acceder a la cancha:</p>
+            <a href="${verifyLink}" style="display:inline-block;margin:24px 0;padding:14px 28px;background:#e03a3e;color:#fff;text-decoration:none;border-radius:8px;font-weight:700">Verificar email</a>
+            <p style="color:#888;font-size:13px">El enlace expira en 24 horas. Si no te registraste en NBA LIVE, ignora este correo.</p>
+        </div>`);
+}
+
 app.post('/api/signup', async (req, res) => {
     try {
         const { username, email, password } = req.body;
@@ -346,27 +377,16 @@ app.post('/api/signup', async (req, res) => {
             [username, email, hashedPassword]
         );
 
-        // Crear token JWT
-        const token = jwt.sign(
-            { id: result.rows[0].id, username, email, plan: 'free', role: 'user' },
-            JWT_SECRET,
-            { expiresIn: '7d' }
-        );
-
+        const newUserId = result.rows[0].id;
         console.log(`✅ Nuevo usuario registrado: ${username}`);
 
+        // Enviar email de verificación (no bloqueante)
+        sendVerificationEmail(newUserId, username, email).catch(err =>
+            console.error('Error enviando email de verificación:', err.message)
+        );
+
         res.status(201).json({
-            message: '¡Cuenta creada con éxito!',
-            token,
-            user: {
-                id: result.rows[0].id,
-                username,
-                email,
-                plan: 'free',
-                coins: 1000,
-                avatar: '🏀',
-                role: 'user'
-            }
+            message: 'Cuenta creada. Revisa tu email para verificar tu cuenta antes de entrar.'
         });
 
     } catch (error) {
@@ -402,6 +422,14 @@ app.post('/api/login', async (req, res) => {
             return res.status(403).json({ error: 'Tu cuenta ha sido suspendida. Contacta con el administrador.' });
         }
 
+        // Verificar si el email está confirmado
+        if (!user.email_verified) {
+            return res.status(403).json({
+                error: 'Debes verificar tu email antes de entrar. Revisa tu bandeja de entrada.',
+                unverified: true
+            });
+        }
+
         // Crear token JWT
         const token = jwt.sign(
             { id: user.id, username: user.username, email: user.email, plan: user.plan, role: user.role || 'user' },
@@ -428,6 +456,116 @@ app.post('/api/login', async (req, res) => {
     } catch (error) {
         console.error('Error en login:', error.message);
         res.status(500).json({ error: 'Error al iniciar sesión.' });
+    }
+});
+
+// ============ RECUPERAR CONTRASEÑA ============
+
+app.post('/api/forgot-password', async (req, res) => {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ error: 'Email requerido.' });
+
+    try {
+        const userResult = await db.query('SELECT id, username FROM users WHERE email = $1', [email]);
+        // Respuesta genérica para no revelar si el email existe
+        if (userResult.rows.length === 0) {
+            return res.json({ message: 'Si ese email existe, recibirás un enlace en breve.' });
+        }
+        const user = userResult.rows[0];
+
+        const crypto = require('crypto');
+        const token = crypto.randomBytes(32).toString('hex');
+        const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
+
+        await db.query(
+            'INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)',
+            [user.id, token, expiresAt]
+        );
+
+        const frontendUrl = process.env.FRONTEND_URL || 'http://127.0.0.1:5502/nba';
+        const resetLink = `${frontendUrl}/reset-password.html?token=${token}`;
+
+        await sendEmail(email, '🏀 NBA LIVE — Recuperar contraseña',
+            `<div style="font-family:sans-serif;max-width:480px;margin:auto;background:#1d1d1d;color:#fff;border-radius:12px;padding:32px">
+                <h1 style="color:#e03a3e;margin-bottom:8px">NBA LIVE</h1>
+                <p>Hola <strong>${user.username}</strong>,</p>
+                <p>Recibimos una solicitud para restablecer tu contraseña. Haz clic en el botón antes de que expire (1 hora):</p>
+                <a href="${resetLink}" style="display:inline-block;margin:24px 0;padding:14px 28px;background:#e03a3e;color:#fff;text-decoration:none;border-radius:8px;font-weight:700">Restablecer contraseña</a>
+                <p style="color:#888;font-size:13px">Si no solicitaste esto, ignora este correo. Tu contraseña no cambiará.</p>
+            </div>`);
+
+        res.json({ message: 'Si ese email existe, recibirás un enlace en breve.' });
+    } catch (error) {
+        console.error('Error en forgot-password:', error.message);
+        res.status(500).json({ error: 'Error al procesar la solicitud.' });
+    }
+});
+
+app.post('/api/reset-password', async (req, res) => {
+    const { token, password } = req.body;
+    if (!token || !password) return res.status(400).json({ error: 'Token y contraseña requeridos.' });
+    if (password.length < 6) return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres.' });
+
+    try {
+        const tokenResult = await db.query(
+            'SELECT * FROM password_reset_tokens WHERE token = $1 AND used = false AND expires_at > NOW()',
+            [token]
+        );
+        if (tokenResult.rows.length === 0) {
+            return res.status(400).json({ error: 'El enlace no es válido o ha expirado.' });
+        }
+        const resetToken = tokenResult.rows[0];
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await db.query('UPDATE users SET password = $1 WHERE id = $2', [hashedPassword, resetToken.user_id]);
+        await db.query('UPDATE password_reset_tokens SET used = true WHERE id = $1', [resetToken.id]);
+
+        res.json({ message: 'Contraseña actualizada correctamente.' });
+    } catch (error) {
+        console.error('Error en reset-password:', error.message);
+        res.status(500).json({ error: 'Error al restablecer la contraseña.' });
+    }
+});
+
+// ============ VERIFICACIÓN DE EMAIL ============
+
+app.get('/api/verify-email', async (req, res) => {
+    const { token } = req.query;
+    if (!token) return res.status(400).json({ error: 'Token requerido.' });
+    try {
+        const tokenResult = await db.query(
+            'SELECT * FROM email_verification_tokens WHERE token = $1 AND used = false AND expires_at > NOW()',
+            [token]
+        );
+        if (tokenResult.rows.length === 0) {
+            return res.status(400).json({ error: 'El enlace no es válido o ha expirado.' });
+        }
+        const { user_id, id } = tokenResult.rows[0];
+        await db.query('UPDATE users SET email_verified = true WHERE id = $1', [user_id]);
+        await db.query('UPDATE email_verification_tokens SET used = true WHERE id = $1', [id]);
+        res.json({ message: '¡Email verificado! Ya puedes iniciar sesión.' });
+    } catch (error) {
+        console.error('Error en verify-email:', error.message);
+        res.status(500).json({ error: 'Error al verificar el email.' });
+    }
+});
+
+app.post('/api/resend-verification', async (req, res) => {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ error: 'Email requerido.' });
+    try {
+        const userResult = await db.query(
+            'SELECT id, username, email_verified FROM users WHERE email = $1', [email]
+        );
+        if (userResult.rows.length === 0 || userResult.rows[0].email_verified) {
+            return res.json({ message: 'Si el email existe y no está verificado, recibirás un nuevo enlace.' });
+        }
+        const user = userResult.rows[0];
+        await sendVerificationEmail(user.id, user.username || 'Usuario', email);
+        res.json({ message: 'Email de verificación reenviado. Revisa tu bandeja de entrada.' });
+    } catch (error) {
+        console.error('Error en resend-verification:', error.message);
+        res.status(500).json({ error: 'Error al reenviar el email.' });
     }
 });
 

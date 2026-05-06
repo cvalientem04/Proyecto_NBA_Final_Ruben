@@ -280,18 +280,9 @@
                     throw new Error(data.error || 'Error al crear la cuenta');
                 }
 
-                // Guardar token en localStorage
-                localStorage.setItem('nba_token', data.token);
-                localStorage.setItem('nba_user', JSON.stringify(data.user));
-
-                // Mostrar éxito
                 messageDiv.className = 'message success';
-                messageDiv.textContent = '✅ ¡Cuenta creada! Redirigiendo...';
-
-                // Redirigir a la página NBA
-                setTimeout(() => {
-                    window.location.href = 'nba.html';
-                }, 1500);
+                messageDiv.textContent = '✅ ' + data.message;
+                document.getElementById('signupForm').style.display = 'none';
 
             } catch (error) {
                 messageDiv.className = 'message error';

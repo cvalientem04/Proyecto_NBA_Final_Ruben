@@ -222,6 +222,9 @@
         </form>
 
         <div class="auth-footer">
+            <a href="forgot-password.html">¿Olvidaste tu contraseña?</a>
+        </div>
+        <div class="auth-footer" style="margin-top:10px">
             ¿No tienes cuenta? <a href="signup.html">Regístrate gratis</a>
         </div>
     </div>
@@ -251,7 +254,9 @@
                 const data = await response.json();
 
                 if (!response.ok) {
-                    throw new Error(data.error || 'Error al iniciar sesión');
+                    const err = new Error(data.error || 'Error al iniciar sesión');
+                    err.unverified = data.unverified || false;
+                    throw err;
                 }
 
                 // Guardar token en localStorage
@@ -269,9 +274,30 @@
 
             } catch (error) {
                 messageDiv.className = 'message error';
-                messageDiv.textContent = `❌ ${error.message}`;
+                messageDiv.innerHTML = `❌ ${error.message}`;
+                if (error.unverified) {
+                    messageDiv.innerHTML += ` <button onclick="resendVerification()" style="margin-top:8px;background:none;border:1px solid #ff6b6b;color:#ff6b6b;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:13px">Reenviar email</button>`;
+                }
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Entrar 🏀';
+            }
+        }
+
+        async function resendVerification() {
+            const email = document.getElementById('email').value.trim();
+            if (!email) { alert('Escribe tu email primero.'); return; }
+            try {
+                const res = await fetch(`${API_SERVER}/api/resend-verification`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                const data = await res.json();
+                const messageDiv = document.getElementById('message');
+                messageDiv.className = 'message success';
+                messageDiv.textContent = '✅ ' + data.message;
+            } catch (e) {
+                alert('Error de conexión.');
             }
         }
 
