@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Memoria PFC</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        font-size: 12pt;
+        line-height: 1.5;
+        text-align: justify;
+        margin: 3cm; /* Margen estándar para impresión */
+    }
+    p {
+        text-indent: 1.25cm; /* Sangría de primera línea */
+        margin-bottom: 12pt; /* Separación entre párrafos de un espacio aproximado */
+        margin-top: 0;
+    }
+    .portada {
+        text-align: center;
+        text-indent: 0;
+        margin-top: 25%;
+    }
+    .portada p, .portada h1 {
+        text-align: center;
+        text-indent: 0;
+    }
+    .page-break {
+        page-break-before: always;
+    }
+    h1, h2, h3 {
+        text-indent: 0;
+        text-align: left;
+    }
+    .indice {
+        text-indent: 0;
+    }
+    .indice p {
+        text-indent: 0;
+        margin-bottom: 5pt;
+    }
+</style>
+</head>
+<body>
+
+<!-- Portada -->
+<div class="portada">
+    <h1>Título del Proyecto: Plataforma "NBA Live"</h1>
+    <br><br><br>
+    <p><strong>Alumno:</strong> Carlos Valiente Marín</p>
+    <p><strong>Centro Educativo:</strong> IES Ágora</p>
+    <p><strong>Tutor/a:</strong> [Nombre del Tutor/a]</p>
+    <p><strong>Ciclo Formativo:</strong> Administración de Sistemas Informáticos en Red (ASIR)</p>
+    <p><strong>Curso:</strong> 2025/2026</p>
+</div>
+
+<div class="page-break"></div>
+
+<!-- Índice -->
+<h1>Índice</h1>
+<div class="indice">
+    <p>1. Introducción</p>
+</div>
+
+<div class="page-break"></div>
+
+<!-- Introducción -->
+<h1>1. Introducción</h1>
+
+<h2>Breve descripción del proyecto</h2>
+<p>El presente proyecto consiste en el diseño, desarrollo y despliegue de "NBA Live", una plataforma web integral enfocada en la liga de baloncesto estadounidense (NBA). La aplicación proporciona a los usuarios información en tiempo real sobre partidos, clasificaciones, estadísticas de jugadores y equipos, así como noticias relevantes del entorno deportivo. Además, incluye un componente interactivo con minijuegos y una sección de comunidad donde los usuarios registrados pueden interactuar y guardar sus equipos y jugadores favoritos.</p>
+<p>Desde el punto de vista técnico y de sistemas, el proyecto engloba la administración de la infraestructura necesaria para su funcionamiento, incluyendo la contenedorización de los servicios mediante Docker, la configuración de un servidor web y un servidor de aplicaciones con Node.js, y la gestión de una base de datos relacional PostgreSQL para el almacenamiento persistente y seguro de la información de los usuarios.</p>
+
+<h2>Justificación</h2>
+<p>La elección de este proyecto surge de la motivación personal por combinar dos áreas de gran interés: el deporte, específicamente el baloncesto, y la administración e implantación de sistemas informáticos y aplicaciones web. A lo largo del ciclo formativo de Administración de Sistemas Informáticos en Red (ASIR), se han adquirido conocimientos fundamentales sobre sistemas operativos, redes, bases de datos y servicios de red y aplicaciones.</p>
+<p>Este proyecto permite poner en práctica y consolidar dichos conocimientos en un entorno real. Al desarrollar y desplegar una aplicación multicapa, se abarcan aspectos cruciales como la configuración y securización de servidores, la gestión de contenedores, la conectividad entre diferentes servicios (frontend, backend, base de datos) y la administración de la información, resolviendo así un reto técnico completo que simula las demandas actuales del mercado laboral en el ámbito de los sistemas y la nube.</p>
+
+<h2>Áreas de trabajo</h2>
+<p>Para la consecución de los objetivos de este proyecto, se ha trabajado en diversas áreas técnicas correspondientes a los módulos del ciclo formativo:</p>
+<p><strong>Implantación de Aplicaciones Web:</strong> Configuración e integración del servidor backend (Node.js/Express) y el servidor web para el frontend, permitiendo la comunicación eficiente a través de APIs REST y gestionando aspectos de seguridad como CORS y autenticación mediante JWT.</p>
+<p><strong>Gestión de Bases de Datos:</strong> Diseño, creación y administración de la base de datos relacional en PostgreSQL para gestionar de forma robusta la información de usuarios, reseñas, puntuaciones y favoritos, garantizando la integridad de los datos.</p>
+<p><strong>Planificación y Administración de Redes y Sistemas:</strong> Uso de tecnologías de contenedorización (Docker y Docker Compose) para estandarizar los entornos de desarrollo y producción, asegurando que la aplicación pueda desplegarse de manera predecible, escalable y aislada en cualquier infraestructura.</p>
+
+</body>
+</html>

@@ -52,7 +52,7 @@ function isAdmin() {
 function ensureAuthenticated() {
     if (isAuthenticated()) return true;
 
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
     return false;
 }
 
@@ -124,11 +124,11 @@ function mergeCoinsOnLogin(serverUser) {
 function logout() {
     localStorage.removeItem('nba_token');
     localStorage.removeItem('nba_user');
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
 }
 
 function initAuth() {
-    const isProtectedPage = !window.location.pathname.toLowerCase().endsWith('/login.html')
+    const isProtectedPage = !window.location.pathname.toLowerCase().endsWith('/index.html')
         && !window.location.pathname.toLowerCase().endsWith('/signup.html');
 
     if (isProtectedPage && !ensureAuthenticated()) {

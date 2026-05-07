@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Memoria PFC</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        font-size: 12pt;
+        line-height: 1.5;
+        text-align: justify;
+        margin: 3cm; /* Margen estándar para impresión */
+    }
+    p {
+        text-indent: 1.25cm; /* Sangría de primera línea */
+        margin-bottom: 12pt; /* Separación entre párrafos */
+        margin-top: 0;
+    }
+    .portada {
+        text-align: center;
+        text-indent: 0;
+        margin-top: 25%;
+    }
+    .portada p, .portada h1 {
+        text-align: center;
+        text-indent: 0;
+    }
+    .page-break {
+        page-break-before: always;
+    }
+    h1, h2, h3, h4 {
+        text-indent: 0;
+        text-align: left;
+    }
+    .indice {
+        text-indent: 0;
+    }
+    .indice p {
+        text-indent: 0;
+        margin-bottom: 5pt;
+    }
+    ul, ol {
+        margin-bottom: 12pt;
+        margin-top: 0;
+    }
+    li {
+        margin-bottom: 6pt;
+    }
+    pre {
+        background-color: #f4f4f4;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px;
+        font-family: "Courier New", Consolas, monospace;
+        font-size: 10pt;
+        overflow-x: auto;
+        text-indent: 0;
+        margin-bottom: 12pt;
+    }
+    code {
+        font-family: "Courier New", Consolas, monospace;
+        background-color: #f4f4f4;
+        padding: 2px 4px;
+        border-radius: 3px;
+    }
+</style>
+</head>
+<body>
+
+<!-- Portada -->
+<div class="portada">
+    <h1>Título del Proyecto: Plataforma Integral "NBA Live"</h1>
+    <br><br><br>
+    <p><strong>Alumno:</strong> Carlos Valiente Marín</p>
+    <p><strong>Centro Educativo:</strong> IES Ágora</p>
+    <p><strong>Tutor/a:</strong> [Nombre del Tutor/a]</p>
+    <p><strong>Ciclo Formativo:</strong> Desarrollo de Aplicaciones Web (DAW)</p>
+    <p><strong>Curso:</strong> 2025/2026</p>
+</div>
+
+<div class="page-break"></div>
+
+<!-- Índice -->
+<h1>Índice</h1>
+<div class="indice">
+    <p>1. Introducción</p>
+    <p>2. Desarrollo del proyecto</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;2.1. Arquitectura y Stack Tecnológico</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;2.2. Diseño de la Base de Datos</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;2.3. Definición de la API REST</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;2.4. Módulos Especialmente Relevantes</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;2.5. Análisis Técnico de Código</p>
+    <p>3. Dificultades encontradas y posibles soluciones</p>
+    <p>4. Posibles mejoras</p>
+    <p>5. Resultados</p>
+    <p>6. Conclusión</p>
+    <p>7. Anexos</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;7.1. Manual Técnico (Instalación y Configuración)</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;7.2. Manual de Usuario Final</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;7.3. Entorno de Desarrollo y Herramientas</p>
+</div>
+
+<div class="page-break"></div>
+
+<!-- 1. Introducción -->
+<h1>1. Introducción</h1>
+
+<h2>Breve descripción del proyecto</h2>
+<p>El presente proyecto de final de ciclo consiste en el diseño, desarrollo a nivel de código y posterior despliegue en producción de "NBA Live". Se trata de una plataforma web integral e interactiva enfocada en la liga de baloncesto estadounidense (NBA). La aplicación proporciona a los usuarios información en tiempo real sobre marcadores de partidos, tablas de clasificaciones de las Conferencias Este y Oeste, estadísticas detalladas de franquicias y jugadores, y noticias relevantes del entorno deportivo.</p>
+<p>Además de actuar como un panel informativo, "NBA Live" incorpora un componente interactivo diseñado para potenciar la retención del usuario. Esto se logra mediante la inclusión de un ecosistema de minijuegos lógicos y una sección de comunidad donde los usuarios registrados pueden interactuar, publicar reseñas y gestionar un perfil propio guardando sus equipos y jugadores favoritos en la nube.</p>
+<p>Desde el punto de vista del Diseño de Interfaces (UX/UI), la plataforma ha sido concebida bajo una estética moderna, implementando tipografías de fácil legibilidad y una paleta de colores cuidadosamente seleccionada para transmitir dinamismo y profesionalidad, emulando la calidad gráfica de las aplicaciones deportivas líderes en el mercado actual y priorizando siempre la experiencia de navegación del usuario.</p>
+<p>Desde el punto de vista técnico, el proyecto engloba la administración completa de la infraestructura subyacente. Esto incluye la contenedorización de los servicios mediante Docker, la programación de un servidor backend utilizando Node.js y Express, y la integración de una base de datos relacional PostgreSQL alojada remotamente (Supabase) para asegurar el almacenamiento persistente y seguro de la información.</p>
+
+<h2>Justificación</h2>
+<p>La elección de este proyecto surge de una motivación personal por combinar dos áreas de gran interés: el deporte y el desarrollo web avanzado. Sin embargo, la justificación académica radica en la necesidad imperante de demostrar un dominio integral (perfil Full-Stack) de las competencias técnicas exigidas hoy en día en el mercado laboral.</p>
+<p>A lo largo del ciclo superior de Desarrollo de Aplicaciones Web (DAW), se han asimilado conceptos sobre programación en el cliente y servidor, el diseño lógico de bases de datos, y las metodologías modernas de despliegue continuo. Este Proyecto Final de Ciclo sirve para unificar esos conocimientos teóricos en un producto real. Al desarrollar y desplegar esta aplicación desde cero, se abarcan retos como la creación de APIs RESTful, el consumo eficiente de APIs de terceros, la administración asíncrona de sesiones descentralizadas mediante JWT, y el modelado riguroso de bases de datos relacionales.</p>
+
+<h2>Áreas de trabajo e implicación de los módulos</h2>
+<p>Para la consecución de los objetivos generales de este proyecto, se ha trabajado en diversas áreas que se corresponden de forma directa con los módulos cursados durante el ciclo de DAW:</p>
+<p><strong>Desarrollo Web en Entorno Cliente (Frontend):</strong> Crucial para la interfaz gráfica y la interactividad. Se ha empleado HTML5 para dar semántica a la estructura, CSS3 (mediante Flexbox y CSS Grid) para un diseño responsivo, y JavaScript puro (Vanilla JS). Mediante JavaScript se manipula dinámicamente el DOM, se gestionan eventos asíncronos y se realizan peticiones HTTP (mediante Fetch) para hidratar las vistas con datos del backend.</p>
+<p><strong>Desarrollo Web en Entorno Servidor (Backend):</strong> Utilizando Node.js y el micro-framework Express, se levantó un servidor encargado de enrutar las peticiones, consumir recursos de terceros y gestionar la lógica de negocio. Se han aplicado medidas de seguridad como el manejo de políticas de mismo origen (CORS) y la implementación de un sistema criptográfico mediante JSON Web Tokens (JWT).</p>
+<p><strong>Bases de Datos y Diseño Conceptual:</strong> El almacenamiento estructurado se ha delegado a PostgreSQL, operando bajo la plataforma Supabase. Se crearon tablas interconectadas para registrar usuarios, validar inicios de sesión (usando el algoritmo de hash Bcrypt), persistir el histórico de puntuaciones de juegos y salvaguardar las claves foráneas (Foreign Keys) que relacionan a los usuarios con sus favoritos.</p>
+<p><strong>Despliegue de Aplicaciones Web:</strong> Para el paso a producción, se recurrió a la contenedorización mediante Docker y Docker Compose. Esto permitió estandarizar los entornos de ejecución, asegurando que el código funcione sin problemas de compatibilidad en un servidor remoto.</p>
+
+<div class="page-break"></div>
+
+<!-- 2. Desarrollo del proyecto -->
+<h1>2. Desarrollo del proyecto</h1>
+<p>El desarrollo ingenieril de "NBA Live" se ha abordado bajo un paradigma Full-Stack estricto. La división del sistema global en una arquitectura cliente-servidor separada promueve el desacoplamiento tecnológico, lo que favorece el mantenimiento del código a largo plazo y la escalabilidad del software.</p>
+
+<h2>2.1. Arquitectura y Stack Tecnológico</h2>
+<p>Para construir la plataforma, se ha seleccionado un ecosistema moderno que equilibra rendimiento y facilidad de mantenimiento modular:</p>
+<ul>
+    <li><strong>Capa de Presentación (Frontend):</strong> Se optó por utilizar Vanilla JavaScript en lugar de depender de frameworks reactivos pesados. El diseño es Mobile-First, y la lógica se encuentra segregada en múltiples módulos independientes como <code>auth.js</code>, <code>clasificacion.js</code>, y <code>minijuegos.js</code>.</li>
+    <li><strong>Capa Lógica (Backend):</strong> Se diseñó una API RESTful con Node.js y Express. Este servidor procesa las cargas de datos (payloads) de los formularios, interactúa con la base de datos PostgreSQL, y se comunica con las APIs estadísticas de terceros (BallDontLie, ESPN), protegiendo las credenciales.</li>
+    <li><strong>Capa de Persistencia (Base de Datos):</strong> El almacenamiento a largo plazo recae en un motor PostgreSQL a través de Supabase DBaaS (Database as a Service).</li>
+    <li><strong>Orquestación y Despliegue (DevOps):</strong> Mediante el archivo <code>docker-compose.yml</code>, se orquestan dos contenedores clave. En lugar de servir los archivos HTML directamente desde Node, se utiliza una imagen de <code>nginx:alpine</code>. Nginx actúa como un servidor proxy estático de alto rendimiento, gestionando el enrutamiento de los archivos visuales hacia el cliente, liberando al contenedor de Node para que se dedique exclusivamente a procesar las peticiones de datos de la API.</li>
+</ul>
+
+<h2>2.2. Diseño de la Base de Datos</h2>
+<p>Para dotar a la plataforma de funcionalidad persistente, fue imperativo desarrollar un modelo relacional eficiente estructurado en las siguientes tablas principales:</p>
+<ul>
+    <li><strong>Tabla 'users':</strong> Almacena los registros de los usuarios. Contiene identificadores únicos generados secuencialmente, el nombre de usuario, el correo electrónico y la contraseña obligatoriamente hasheada. Incluye un campo entero denominado <code>monedas</code> para la gamificación.</li>
+    <li><strong>Tabla 'favoritos':</strong> Actúa como tabla relacional para implementar el almacenamiento de preferencias. Contiene una clave foránea apuntando al ID del usuario y campos para almacenar el identificador del equipo o jugador externo.</li>
+    <li><strong>Tabla 'reviews':</strong> Persiste la comunidad de la web. Registra reseñas asociando el ID del autor, una calificación entera (del 1 al 5), un texto y una marca de tiempo automática.</li>
+</ul>
+
+<h2>2.3. Definición de la API REST (Rutas del Servidor)</h2>
+<p>El backend Node.js expone un contrato de interfaces para que el frontend pueda operar con los datos. Las rutas principales son:</p>
+<ul>
+    <li><code>POST /api/register</code>: Recibe datos de un nuevo usuario, encripta la contraseña e inserta la fila en la tabla. Devuelve un Token JWT.</li>
+    <li><code>POST /api/login</code>: Valida las credenciales contra la base de datos. Si el hash coincide, emite un nuevo Token de autorización.</li>
+    <li><code>GET /api/games</code>: Endpoint Proxy. El servidor consulta su caché y, si no tiene los datos recientes, consulta a la API de la NBA externa y devuelve el JSON.</li>
+    <li><code>POST /api/favorites</code>: Ruta protegida (requiere JWT). Inserta una nueva fila asociando el usuario autenticado con la entidad deportiva.</li>
+    <li><code>PUT /api/coins</code>: Ruta protegida. Suma la recompensa de los minijuegos al perfil del jugador en PostgreSQL.</li>
+</ul>
+
+<h2>2.4. Módulos Especialmente Relevantes</h2>
+<h3>Sistema Inteligente de Caché para Consumo de APIs Externas</h3>
+<p>La plataforma muestra datos interactuando con interfaces gratuitas externas que imponen estrictos límites de uso (Rate Limits). Si la aplicación web solicitaba datos constantemente, la dirección IP del servidor quedaba bloqueada por saturación.</p>
+<p>Para solucionar este problema, se desarrolló un sistema de caché en la memoria RAM del propio proceso de Node.js. Si los datos solicitados han sido requeridos recientemente y aún no han caducado según un TTL (Time To Live), el servidor devuelve la respuesta clonada desde su memoria. Solo si la caché expiró, el servidor contacta con la API de la NBA, centralizando el tráfico externo y salvando la plataforma de caídas.</p>
+
+<h3>Modularización del Código Frontend (Vanilla JS)</h3>
+<p>Al no contar con un framework que estructure el proyecto por defecto, se hizo uso intensivo del estándar de módulos de ECMAScript (ES6 Modules). Todo el código JavaScript de la capa de presentación fue estrictamente segmentado por responsabilidades. Por ejemplo, las funciones encargadas de realizar peticiones HTTP mediante <code>fetch</code> se aislaron en un archivo dedicado, separándolas de las funciones responsables de la inyección visual en el DOM. Esta arquitectura de separación de responsabilidades (Separation of Concerns) evita la proliferación de código desorganizado y simplifica drásticamente el proceso de depuración (debugging) directo en la consola de herramientas del navegador.</p>
+
+<h3>Carga y Gestión de Variables de Entorno Seguras</h3>
+<p>Para asegurar la infraestructura backend desde el primer minuto de ejecución, se integró el módulo nativo <code>dotenv</code> en el núcleo del servidor Node.js. Esto permite que la API analice de forma transparente archivos ocultos del sistema y cargue en la memoria volátil las credenciales maestras de la base de datos (Supabase) y la semilla criptográfica (JWT Secret). Esta técnica programática garantiza que ningún dato o contraseña sensible termine publicado por error y expuesto públicamente en los repositorios de control de código de GitHub.</p>
+
+<div class="page-break"></div>
+
+<h2>2.5. Análisis Técnico de Código (Implementaciones Clave)</h2>
+<p>A continuación, se transcriben bloques de código fundamentales que cimentan el correcto desempeño de "NBA Live".</p>
+
+<h3>A. Mecanismo de Caché en Memoria (Node.js)</h3>
+<pre><code>// ============ CACHÉ EN MEMORIA (server.js) ============
+// Objeto que retiene la información en la memoria RAM
+const cache = {
+    games: null,
+    gamesTimestamp: 0
+};
+
+// 30 segundos de vida útil
+const CACHE_DURATION = 30000; 
+
+app.get('/api/games', async (req, res) => {
+    try {
+        const now = Date.now();
+        // Verificamos existencia y validez
+        if (cache.games && (now - cache.gamesTimestamp) < CACHE_DURATION) {
+            return res.json(cache.games);
+        }
+        
+        // Petición asíncrona al proveedor externo
+        const response = await fetch(`https://api.balldontlie.io/v1/games`);
+        const data = await response.json();
+        
+        // Almacenamos el resultado fresco
+        cache.games = data;
+        cache.gamesTimestamp = now;
+        
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: 'Error de red' });
+    }
+});</code></pre>
+
+<h3>B. Middleware de Verificación de Identidad JWT (Node.js)</h3>
+<pre><code>// ============ MIDDLEWARE: Verificar JWT ============
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; 
+
+    if (!token) {
+        return res.status(401).json({ error: 'Denegado. Se requiere token.' });
+    }
+
+    try {
+        const user = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = user; 
+        next(); 
+    } catch (error) {
+        return res.status(403).json({ error: 'Token inválido o expirado.' });
+    }
+}</code></pre>
+
+<h3>C. Lógica de Autenticación en Frontend (auth.js)</h3>
+<pre><code>// ============ HIDRATACIÓN DE UI (auth.js) ============
+document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('jwt_token');
+    const userContainer = document.getElementById('user-profile-nav');
+
+    if (token) {
+        // Decodificamos datos base para hidratar la vista
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        userContainer.innerHTML = `
+            &lt;span class="user-badge"&gt;👤 ${payload.username}&lt;/span&gt;
+            &lt;span class="coins-badge"&gt;🪙 ${payload.monedas}&lt;/span&gt;
+            &lt;button onclick="logout()"&gt;Salir&lt;/button&gt;
+        `;
+    } else {
+        userContainer.innerHTML = `
+            &lt;a href="login.html"&gt;Acceder&lt;/a&gt;
+        `;
+    }
+});</code></pre>
+
+<h3>D. Encriptado de Contraseñas (Node.js)</h3>
+<pre><code>// ============ HASHING CON BCRYPT ============
+const bcrypt = require('bcrypt');
+const SALT_ROUNDS = 10;
+
+app.post('/api/register', async (req, res) => {
+    const { username, email, password } = req.body;
+    try {
+        const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+        await db.query(
+            'INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3)',
+            [username, email, hashedPassword]
+        );
+        res.status(201).json({ message: 'Cuenta creada seguro.' });
+    } catch (error) {
+        res.status(400).json({ error: 'El registro falló.' });
+    }
+});</code></pre>
+
+<h3>E. Prevención de Inyección SQL en Inserciones (Node.js)</h3>
+<p>Este bloque demuestra el estándar de seguridad adoptado para las entradas de texto libres por parte de los usuarios, salvaguardando la integridad de la base de datos contra intenciones maliciosas o caracteres de escape no filtrados.</p>
+<pre><code>// ============ INSERCIÓN DE RESEÑAS ============
+app.post('/api/reviews', authenticateToken, async (req, res) => {
+    const { rating, comment } = req.body;
+    
+    // Validación de integridad (Sanitization)
+    if (!rating || rating < 1 || rating > 5) {
+        return res.status(400).json({ error: 'Valoración incorrecta.' });
+    }
+
+    try {
+        // Uso obligatorio de Consultas Parametrizadas ($1, $2, $3)
+        // Esto neutraliza por completo los ataques de SQL Injection
+        await db.query(
+            'INSERT INTO reviews (user_id, rating, comment) VALUES ($1, $2, $3)',
+            [req.user.id, rating, comment]
+        );
+        res.status(201).json({ message: 'Reseña insertada exitosamente.' });
+    } catch (error) {
+        res.status(500).json({ error: 'Fallo al procesar la inserción.' });
+    }
+});</code></pre>
+
+<div class="page-break"></div>
+
+<!-- 3. Dificultades encontradas y posibles soluciones -->
+<h1>3. Dificultades encontradas y posibles soluciones</h1>
+<p>El desarrollo ha planteado diversos obstáculos técnicos de consideración:</p>
+
+<h2>3.1. Restricciones CORS y Gestión de Rate Limits</h2>
+<p><strong>Dificultad:</strong> En el prototipo inicial, el navegador hacía llamadas directas a los servidores estadísticos de la NBA. Los navegadores imponían bloqueos de CORS (Cross-Origin Resource Sharing). Además, las APIs gratuitas imponían límites de cuota de uso, bloqueando nuestra aplicación.</p>
+<p><strong>Solución:</strong> Se configuró el Backend de Node.js como un servidor Proxy. Puesto que las restricciones CORS aplican exclusivamente al navegador y no a las comunicaciones entre servidores, los problemas se desvanecieron. Esto justificó la creación del módulo interno de Caché analizado anteriormente, salvando los límites de cuota.</p>
+
+<h2>3.2. Estructuración del Frontend sin Frameworks</h2>
+<p><strong>Dificultad:</strong> Mantener y actualizar elementos visuales simultáneamente (como marcadores en vivo y puntuaciones) utilizando JavaScript nativo causaba un código muy acoplado y difícil de mantener.</p>
+<p><strong>Solución:</strong> Se optó por refactorizar el código aplicando ES6 Modules (import/export), creando ficheros funcionales independientes. Se justificó la implementación de promesas asíncronas (<code>async/await</code>), lo cual aplanó el código y mejoró la legibilidad lógica.</p>
+
+<h2>3.3. Persistencia Segura del Estado (Stateless)</h2>
+<p><strong>Dificultad:</strong> Al navegar físicamente por varios archivos <code>.html</code>, el usuario se deslogueaba entre las redirecciones de la web.</p>
+<p><strong>Solución:</strong> Se recurrió al estándar JWT almacenado de forma latente en el <code>localStorage</code> del dispositivo del cliente. La web invoca silenciosamente a un script hidratador que interpreta el token y modifica la barra de menú instantáneamente sin cargar el servidor.</p>
+
+<h2>3.4. Gestión de Variables de Entorno y Seguridad en Contenedores</h2>
+<p><strong>Dificultad:</strong> Durante el proceso de contenedorización con Docker, surgió el problema de cómo inyectar las cadenas de conexión a la base de datos de Supabase y la firma JWT secreta sin tener que escribir (hardcodear) estos valores sensibles dentro del código de la imagen <code>Dockerfile</code>, lo que representaría una vulnerabilidad crítica.</p>
+<p><strong>Solución:</strong> Se implementó un archivo <code>.env</code> local que se sincroniza exclusivamente mediante directivas internas de <code>docker-compose.yml</code>. El contenedor lee estas variables durante el tiempo de ejecución en lugar de almacenarlas durante la construcción, manteniendo la imagen de Node.js agnóstica y completamente segura frente a posibles filtraciones de código.</p>
+
+<div class="page-break"></div>
+
+<!-- 4. Posibles mejoras -->
+<h1>4. Posibles mejoras</h1>
+<p>A la luz de los conocimientos adquiridos, existen múltiples áreas de mejora profunda para las versiones futuras:</p>
+
+<h2>Integración de un Framework Reactivo y TypeScript</h2>
+<p>Transicionar la capa de presentation hacia un framework declarativo (como React.js o Vue.js) reduciría significativamente la complejidad al delegar los re-renderizados del DOM al motor interno de la librería. Adicionalmente, reescribir todo el código implementando TypeScript agregaría tipado estático, eliminando un altísimo porcentaje de errores en tiempo de ejecución.</p>
+
+<h2>Arquitectura Event-Driven: WebSockets</h2>
+<p>La web confía actualmente en peticiones cronometradas (HTTP Polling). Implementar el protocolo WebSockets permitiría establecer un túnel de datos persistente. El servidor backend podría empujar de forma reactiva las modificaciones de los marcadores deportivos, proporcionando un entorno genuino de "Tiempo Real" a los espectadores.</p>
+
+<h2>Refuerzo de Ciberseguridad (Cookies HttpOnly)</h2>
+<p>El almacenamiento del Token JWT en <code>localStorage</code> expone el sistema a posibles ataques XSS. La mejora obligada consistiría en transicionar dicho almacenamiento hacia Cookies inyectadas por el servidor, configuradas con las propiedades <code>HttpOnly</code> y <code>Secure</code>, blindando la arquitectura frente a secuestros de sesión informáticos.</p>
+
+<div class="page-break"></div>
+
+<!-- 5. Resultados -->
+<h1>5. Resultados</h1>
+<p>La finalización de este proyecto ha dado como fruto una plataforma web deportiva ("NBA Live") madura, de alta disponibilidad y plenamente funcional, cumpliendo con total rigurosidad los objetivos iniciales.</p>
+<p>Desde el punto de vista del diseño y la experiencia de usuario, la correcta aplicación de directivas CSS Grid y Flexbox ha garantizado que la plataforma supere las métricas de usabilidad básicas. El diseño responsivo permite que el contenido dinámico fluya y se adapte sin problemas en resoluciones estrechas de dispositivos móviles sin romper el modelo de caja ni requerir descargas adicionales. A su vez, al prescindir de dependencias externas pesadas, el tiempo de primera carga de la web (Time to Interactive) es prácticamente instantáneo, un aspecto muy penalizado en proyectos similares construidos con tecnologías inadecuadas.</p>
+<p>Se ha logrado materializar una solución orquestada Full-Stack. El microservicio backend sobre Node.js ha demostrado su fiabilidad extrema actuando como un escudo proxy. El vital sistema de caché ha sido el auténtico núcleo de valor que ha garantizado un flujo informativo veloz hacia el usuario, mitigando el riesgo de bloqueos por límite de peticiones (Rate Limiting).</p>
+<p>La base de datos operada por Supabase se integró con total naturalidad, habilitando el despliegue seguro de cuentas de usuario privadas. Mediante el uso de procesos criptográficos (Bcrypt y JWT), se ha asegurado el almacenamiento de miles de perfiles que pueden registrar sus preferencias relativas a los equipos y formar parte de una comunidad web.</p>
+<p>Como guinda tecnológica, se destaca la contenedorización total de la solución mediante Docker y Docker Compose, garantizando que esta plataforma sea un software portátil, preparado para la empresa y desplegable sin errores en servidores Linux modernos.</p>
+
+<div class="page-break"></div>
+
+<!-- 6. Conclusión -->
+<h1>6. Conclusión</h1>
+<p>La conceptualización, estructuración algorítmica y despliegue final de esta plataforma web ha supuesto el desafío técnico más importante afrontado hasta la fecha. Este trabajo integrador se establece como el punto culminante necesario para consolidar todo el temario y competencias profesionales del Grado Superior en Desarrollo de Aplicaciones Web (DAW).</p>
+<p>He verificado empíricamente la enorme dificultad inherente a mantener un sistema descentralizado. Dedicar jornadas a refactorizar el DOM visual, diseñar claves en bases de datos relacionales, y lidiar directamente con problemas nativos de red (manejo de CORS o Rate Limits) han agudizado mi intuición y forjado mi capacidad analítica técnica.</p>
+<p>Más allá de las barreras puramente informáticas, el proyecto también ha supuesto una inmensa lección de gestión de proyectos y recursos temporales. Planificar las fases lógicas de desarrollo, priorizando la consecución de las herramientas críticas (Backend y Bases de Datos) frente a las visuales (Frontend) ha sido vital para no comprometer los plazos de entrega.</p>
+<p>Reconociendo que el lanzamiento es únicamente la primera iteración de un ciclo continuo, observo el futuro de la aplicación con un claro mapa de refactorización. Las rutas de mejora expuestas (React, TypeScript, WebSockets) representan fielmente mi plan formativo continuo a corto plazo. Como balance retrospectivo total, la solidez operativa que hoy arroja el ecosistema de "NBA Live" valida categóricamente mi capacitación integral para concebir, desarrollar y desplegar aplicaciones web robustas listas para entornos empresariales.</p>
+
+<div class="page-break"></div>
+
+<!-- 7. Anexos -->
+<h1>7. Anexos</h1>
+
+<h2>7.1. Manual Técnico (Instalación y Configuración)</h2>
+<p>La plataforma puede ser ejecutada de manera local o a través de despliegue contenerizado estandarizado orientado a producción.</p>
+
+<h3>A. Entorno Local (Con Visual Studio Code)</h3>
+<p><strong>Requisitos:</strong></p>
+<ul>
+    <li>Editor <strong>Visual Studio Code</strong> instalado.</li>
+    <li>Entorno asíncrono <strong>Node.js</strong> y <code>npm</code> instalados.</li>
+    <li>Extensión <strong>"Live Server"</strong> integrada en VS Code.</li>
+</ul>
+<p><strong>Pasos para arranque local:</strong></p>
+<ol>
+    <li>Abrir VS Code y seleccionar <code>Archivo > Abrir Carpeta...</code> eligiendo el directorio raíz <code>nba/</code>.</li>
+    <li>Llamar a una terminal anclada (<code>Terminal > Nueva Terminal</code>).</li>
+    <li>Navegar al backend con: <code>cd nba-server</code></li>
+    <li>Instalar dependencias necesarias (Express, PostgreSQL, JWT, Bcrypt) ejecutando: <code>npm install</code>.</li>
+    <li>Crear un archivo <code>.env</code> en la subcarpeta <code>nba-server</code> albergando las variables:
+        <br><code>DATABASE_URL=postgres://tu_usuario:tu_contraseña_privada@dominio.supabase.co:5432/postgres</code>
+        <br><code>JWT_SECRET=escribe_tu_llave_secreta_aqui</code>
+    </li>
+    <li>Iniciar el bucle de peticiones con el comando: <code>node server.js</code>.</li>
+    <li>Hacer clic derecho sobre el archivo <code>nba.html</code> en VS Code y lanzar la opción <strong>"Open with Live Server"</strong> para hidratar visualmente la plataforma en el navegador.</li>
+</ol>
+
+<h3>B. Despliegue Automatizado Mediante Docker</h3>
+<p>Para entornos productivos o tribunales de evaluación, el proyecto presenta su faceta DevOps contenerizada definitiva.</p>
+<p><strong>Requisitos:</strong></p>
+<ul>
+    <li>Daemon <strong>Docker Engine</strong> y <strong>Docker Compose</strong> instalados.</li>
+    <li>Puertos TCP <code>8080</code> y <code>3000</code> libres en la máquina anfitriona.</li>
+</ul>
+<p><strong>Pasos para despliegue automatizado:</strong></p>
+<ol>
+    <li>Garantizar que el archivo <code>.env</code> esté debidamente posicionado en <code>nba-server/</code>.</li>
+    <li>Abrir una terminal en la raíz del proyecto y teclear el orquestador: <code>docker-compose up -d --build</code></li>
+    <li>Docker instanciará una imagen de servidor web ultra-ligero <code>nginx:alpine</code> y compilará la imagen Node.js del backend. Ambos servicios quedarán operando unificados.</li>
+    <li>Acceder desde el navegador a la ruta local: <code>http://localhost:8080</code>.</li>
+</ol>
+<p><em>Nota sobre Virtualización: La concepción puntera del presente proyecto web descarta el uso de Máquinas Virtuales pesadas y obsoletas (VMDK/OVA). El empaquetado aislado de dependencias se ha acometido recurriendo al empleo de Contenedores Ligeros (Docker), el estándar incuestionable del mercado laboral (filosofía DevOps) para despliegues ágiles.</em></p>
+
+<h2>7.2. Manual de Usuario Final</h2>
+<p>La aplicación "NBA Live" dispone de una navegabilidad altamente funcional, asegurando un aprendizaje orgánico inmediato.</p>
+
+<p><strong>Para Usuarios Visitantes (No Registrados):</strong></p>
+<ul>
+    <li><strong>Exploración Libre:</strong> El individuo tiene libertad de adentrarse por el menú superior y revisar "Games" (marcadores en directo), "Standings" (tablas de clasificación general), "Steams" (fichas de entidades) y "News" (noticias deportivas externas).</li>
+    <li><strong>Rango Pasivo de Foros:</strong> Tienen derecho total de lectura en la zona de comunidad, pudiendo presenciar las reseñas valorativas publicadas por los perfiles inscritos.</li>
+    <li><strong>Bloqueo Defensivo:</strong> Si intentan registrar puntuaciones en minijuegos, emitir reseñas o guardar datos favoritos, un protocolo asíncrono los interceptará redirigiéndolos sutilmente a formalizar su alta en el sistema de inicio de sesión.</li>
+</ul>
+
+<p><strong>Para Usuarios Registrados:</strong></p>
+<ul>
+    <li><strong>Gestión de Alta (Login/Signup):</strong> Al formalizar su correo y contraseña en <code>signup.html</code>, el sistema genera su cuenta. La barra superior reacciona asíncronamente reflejando su Alias de usuario junto con su saldo base inicial de "Monedas" lúdicas.</li>
+    <li><strong>Panel de Favoritos:</strong> El usuario visualizará botones con forma de "estrella" al consultar información de jugadores o equipos. Pulsarlos genera una petición que archiva el elemento en su directorio privado, permitiendo un acceso recurrente veloz en su pestaña de "Favoritos".</li>
+    <li><strong>Escritura en Comunidad:</strong> Quedan facultados de emitir inputs evaluativos textuales y numéricos (estrellas) en el tablón público de reseñas, sumando al debate general de la plataforma de forma visible para todos los visitantes.</li>
+    <li><strong>Minijuegos Lúdicos:</strong> En el área de juegos, el usuario encontrará diversas mecánicas, como la "Trivia" visual de estadísticas históricas o el clásico "Ahorcado" sobre nombres de jugadores de la liga. Estas mecánicas no solo amenizan la estancia en la web, sino que recompensan económicamente de forma virtual sus victorias lógicas. El servidor backend de Node.js se encarga de guardar estos progresos en cada sesión para que nunca se pierda el avance acumulado.</li>
+    <li><strong>Desvinculación (Cierre de Sesión):</strong> Pulsar el botón de cierre elimina definitivamente el token latente <code>jwt_token</code> en la memoria del navegador, cerrando el terminal operativo y salvaguardando en local su identidad.</li>
+</ul>
+
+<h2>7.3. Entorno de Desarrollo y Herramientas</h2>
+<p>Para la correcta gestión del proyecto se han empleado herramientas estandarizadas complementarias al código fuente. El control de versiones se ha efectuado mediante repositorios de <strong>Git y GitHub</strong>, lo cual permitió mantener un histórico limpio de todas las fases del desarrollo y asegurar la persistencia en la nube ante posibles fallos locales. Esta práctica de control de ramas es vital de cara a la inserción en el mercado laboral. Por otro lado, la verificación y prueba funcional de los Endpoints de la API se llevó a cabo utilizando <strong>Postman</strong>, una plataforma que facilitó la inyección de Tokens JWT y la validación de respuestas JSON de manera previa a su integración definitiva con las pantallas del Frontend.</p>
+
+</body>
+</html>

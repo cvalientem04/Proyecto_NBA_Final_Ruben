@@ -4,41 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NBA LIVE - Verificar email</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #000; color: #fff; min-height: 100vh;
-            display: flex; align-items: center; justify-content: center;
-            background-image:
-                radial-gradient(circle at 20% 50%, rgba(224,58,62,0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 50%, rgba(224,58,62,0.1) 0%, transparent 50%);
-        }
-        .auth-top-logo { position: fixed; top: 18px; left: 20px; text-decoration: none; z-index: 20; }
-        .auth-top-logo img { width: 42px; height: 42px; object-fit: contain; }
-        .auth-container {
-            background-color: #1d1d1d; border-radius: 16px; padding: 40px;
-            width: 100%; max-width: 420px; text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5); border: 1px solid #2d2d2d;
-        }
-        .auth-logo img { width: 62px; height: 62px; object-fit: contain; margin-bottom: 10px; }
-        .auth-title { font-size: 28px; font-weight: 900; color: #e03a3e; margin-bottom: 24px; }
-        .status-icon { font-size: 56px; margin-bottom: 16px; }
-        .status-msg { font-size: 16px; line-height: 1.5; color: #ccc; margin-bottom: 28px; }
-        .btn {
-            display: inline-block; padding: 14px 28px;
-            background: linear-gradient(135deg, #e03a3e, #c42f33);
-            color: #fff; text-decoration: none; border-radius: 8px;
-            font-weight: 700; font-size: 15px; letter-spacing: 0.5px;
-            transition: all 0.3s;
-        }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(224,58,62,0.4); }
-        .spinner { font-size: 40px; animation: spin 1s linear infinite; margin-bottom: 16px; display: inline-block; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
-    <a href="login.html" class="auth-top-logo"><img src="../img/Logo.png" alt="NBA LIVE Logo"></a>
+<body class="auth-page">
+    <a href="index.html" class="auth-top-logo"><img src="../img/Logo.png" alt="NBA LIVE Logo"></a>
     <div class="auth-container">
         <div class="auth-logo"><img src="../img/Logo.png" alt="NBA LIVE Logo"></div>
         <h1 class="auth-title">NBA LIVE</h1>
@@ -59,7 +28,7 @@
             if (!token) {
                 icon.textContent = '❌';
                 msg.textContent  = 'Enlace no válido. Vuelve al login y solicita un nuevo email de verificación.';
-                btn.innerHTML    = '<a href="login.html" class="btn">Ir al login</a>';
+                btn.innerHTML    = '<a href="index.html" class="btn">Ir al login</a>';
                 return;
             }
 
@@ -70,17 +39,17 @@
                 if (res.ok) {
                     icon.textContent = '✅';
                     msg.textContent  = data.message + ' Redirigiendo al login...';
-                    btn.innerHTML    = '<a href="login.html" class="btn">Entrar ahora</a>';
-                    setTimeout(() => { window.location.href = 'login.html'; }, 2500);
+                    btn.innerHTML    = '<a href="index.html" class="btn">Entrar ahora</a>';
+                    setTimeout(() => { window.location.href = 'index.html'; }, 2500);
                 } else {
                     icon.textContent = '❌';
                     msg.textContent  = data.error || 'El enlace no es válido o ha expirado.';
-                    btn.innerHTML    = '<a href="login.html" class="btn">Ir al login</a>';
+                    btn.innerHTML    = '<a href="index.html" class="btn">Ir al login</a>';
                 }
             } catch (e) {
                 icon.textContent = '❌';
                 msg.textContent  = 'Error de conexión. ¿Está el servidor encendido?';
-                btn.innerHTML    = '<a href="login.html" class="btn">Ir al login</a>';
+                btn.innerHTML    = '<a href="index.html" class="btn">Ir al login</a>';
             }
         }
 
