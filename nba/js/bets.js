@@ -123,6 +123,24 @@
         </li>`;
     }
 
+    // ── Sync coins from server ──────────────────────────────
+    async function refreshUserCoins() {
+        try {
+            const res = await fetch(`${API}/api/profile`, { headers: _authHeader() });
+            if (!res.ok) return;
+            const data = await res.json();
+            if (!data.user) return;
+            const userRaw = localStorage.getItem('nba_user');
+            if (userRaw) {
+                const user = JSON.parse(userRaw);
+                user.coins = data.user.coins;
+                localStorage.setItem('nba_user', JSON.stringify(user));
+            }
+            const coinsEl = document.getElementById('userCoins');
+            if (coinsEl) coinsEl.textContent = `🪙 ${data.user.coins}`;
+        } catch (_) {}
+    }
+
     // ── Load & render ───────────────────────────────────────
     async function loadEvents() {
         try {
@@ -194,7 +212,7 @@
             const el = document.getElementById(`bets-tab-${t}`);
             if (el) el.style.display = t === tab ? '' : 'none';
         });
-        if (tab === 'mine') loadMyBets();
+        if (tab === 'mine') { refreshUserCoins(); loadMyBets(); }
     }
 
     // ── Bet modal ───────────────────────────────────────────
@@ -278,6 +296,7 @@
     // ── Init ────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', () => {
         window.initAuth && window.initAuth();
+        refreshUserCoins();
         loadEvents();
 
         const modal = document.getElementById('betModal');
