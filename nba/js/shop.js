@@ -66,8 +66,7 @@ function getEquippedIdByType(type) {
     if (!userCosmetics) return null;
     const map = {
         badge: userCosmetics.equipped_badge_id,
-        color: userCosmetics.equipped_color_id,
-        frame: userCosmetics.equipped_frame_id
+        color: userCosmetics.equipped_color_id
     };
     return map[type] ?? null;
 }
@@ -234,7 +233,6 @@ function renderInventory() {
 
     const equippedBadge = userInventory.find(i => i.id === userCosmetics?.equipped_badge_id);
     const equippedColor = userInventory.find(i => i.id === userCosmetics?.equipped_color_id);
-    const equippedFrame = userInventory.find(i => i.id === userCosmetics?.equipped_frame_id);
     const activeTitle = userCosmetics?.active_title;
     const titleItem = allItems.find(i => i.type === 'title');
     const ownsTitleSlot = titleItem ? isOwned(titleItem.id) : false;
@@ -253,11 +251,6 @@ function renderInventory() {
                     ${equippedColor ? escHtml(equippedColor.name) : '—'}
                 </span>
                 ${equippedColor ? `<button class="shop-btn shop-btn--sm shop-btn--ghost" onclick="unequipItem('color')" style="margin-top:8px">Quitar</button>` : ''}
-            </div>
-            <div class="inventory-equipped-slot">
-                <span class="inventory-slot-label">🖼️ Marco de avatar</span>
-                <span class="inventory-slot-value">${equippedFrame ? escHtml(equippedFrame.icon_emoji + ' ' + equippedFrame.name) : '—'}</span>
-                ${equippedFrame ? `<button class="shop-btn shop-btn--sm shop-btn--ghost" onclick="unequipItem('frame')" style="margin-top:8px">Quitar</button>` : ''}
             </div>
             <div class="inventory-equipped-slot">
                 <span class="inventory-slot-label">✏️ Título personalizado</span>
@@ -365,7 +358,6 @@ function refreshCurrentTab() {
     const map = {
         badges: () => renderGrid('badges-grid', 'badge'),
         colors: () => renderGrid('colors-grid', 'color'),
-        frames: () => renderGrid('frames-grid', 'frame'),
         title: () => renderTitleTab(),
         inventory: () => renderInventory()
     };
@@ -397,10 +389,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         await Promise.all([loadShopItems(), loadInventory()]);
         renderGrid('badges-grid', 'badge');
         renderGrid('colors-grid', 'color');
-        renderGrid('frames-grid', 'frame');
     } catch (err) {
         console.error('Error inicializando tienda:', err);
-        ['badges-grid', 'colors-grid', 'frames-grid'].forEach(id => {
+        ['badges-grid', 'colors-grid'].forEach(id => {
             const el = document.getElementById(id);
             if (el) el.innerHTML = '<p class="shop-empty" style="color:#e03a3e">Error al cargar. Recarga la página.</p>';
         });

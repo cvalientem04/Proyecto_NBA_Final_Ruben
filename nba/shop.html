@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../img/Logo.png">
     <title>NBA LIVE - Tienda</title>
     <meta name="description" content="Tienda virtual de NBA LIVE. Compra insignias, colores de nombre, marcos de avatar y títulos personalizados con tus monedas.">
     <link rel="stylesheet" href="css/styles.css">
@@ -36,7 +37,7 @@
         <section id="shop-page">
             <div class="shop-page-header">
                 <h2 class="section-title">🛍️ Tienda Virtual</h2>
-                <p class="shop-page-subtitle">Gasta tus monedas en insignias, colores de nombre, marcos y títulos únicos</p>
+                <p class="shop-page-subtitle">Gasta tus monedas en insignias, colores de nombre y títulos únicos</p>
                 <div class="shop-balance-pill">
                     🪙 <span id="shopCoins">0</span> monedas disponibles
                 </div>
@@ -46,8 +47,7 @@
             <div class="shop-tabs">
                 <button class="shop-tab active" data-tab="badges" onclick="switchShopTab('badges')">🎖️ Insignias</button>
                 <button class="shop-tab" data-tab="colors" onclick="switchShopTab('colors')">🎨 Colores</button>
-                <button class="shop-tab" data-tab="frames" onclick="switchShopTab('frames')">🖼️ Marcos</button>
-                <button class="shop-tab" data-tab="title" onclick="switchShopTab('title')">✏️ Título</button>
+<button class="shop-tab" data-tab="title" onclick="switchShopTab('title')">✏️ Título</button>
                 <button class="shop-tab" data-tab="inventory" onclick="switchShopTab('inventory')">🎒 Mi Inventario</button>
             </div>
 
@@ -64,14 +64,6 @@
                 <p class="shop-tab-desc">Cambia el color de tu nombre en las reseñas y comentarios. Solo se aplica un color a la vez.</p>
                 <div id="colors-grid" class="shop-items-grid">
                     <p class="shop-loading">Cargando colores...</p>
-                </div>
-            </div>
-
-            <!-- Tab: Marcos -->
-            <div id="tab-frames" class="shop-tab-content" style="display:none">
-                <p class="shop-tab-desc">Los marcos se muestran alrededor de tu avatar en tu perfil. Solo se muestra uno a la vez.</p>
-                <div id="frames-grid" class="shop-items-grid">
-                    <p class="shop-loading">Cargando marcos...</p>
                 </div>
             </div>
 
