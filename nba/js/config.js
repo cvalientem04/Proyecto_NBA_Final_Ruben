@@ -4,7 +4,7 @@
 // ============================================================
 
 // URL base del servidor backend (cambiar en producción al dominio real)
-const API_SERVER = 'https://proyecto-nba-final-ruben.onrender.com';
+const API_SERVER = 'http://localhost:3000';
 
 // Mapa de conversión de abreviaturas de equipos ESPN → NBA CDN.
 // Algunas abreviaturas difieren entre la API de ESPN y la CDN oficial de la NBA,
