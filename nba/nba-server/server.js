@@ -39,6 +39,15 @@ const PORT = 3000;
 const API_KEY = process.env.NBA_API_KEY;
 const JWT_SECRET = process.env.JWT_SECRET;
 
+const NBA_CDN_HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Referer': 'https://www.nba.com/'
+};
+
+async function fetchNbaCdn(url) {
+    return fetch(url, { headers: NBA_CDN_HEADERS });
+}
+
 // ============ CACHÉ EN MEMORIA ============
 // Guarda las respuestas para no llamar a la API cada vez
 const cache = {
@@ -55,7 +64,7 @@ const cache = {
     playoffBracket: null,
     playoffBracketTimestamp: 0
 };
-const CACHE_DURATION = 30000; // 30 segundos - la caché dura más que tus 15s de refresh
+const CACHE_DURATION = 30000; // 30 segundos
 
 // Catálogo estático de equipos NBA (id de BallDontLie + id oficial NBA para logo).
 const NBA_TEAMS_CATALOG = [
@@ -994,7 +1003,7 @@ app.get('/api/nba/scoreboard', async (req, res) => {
         }
 
         console.log('🌐 Llamando a NBA CDN scoreboard...');
-        const response = await fetch('https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json');
+        const response = await fetchNbaCdn('https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json');
 
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -1026,7 +1035,7 @@ app.get('/api/nba/boxscore/:gameId', async (req, res) => {
         }
 
         console.log(`🌐 Llamando a NBA CDN boxscore ${gameId}...`);
-        const response = await fetch(`https://cdn.nba.com/static/json/liveData/boxscore/boxscore_${gameId}.json`);
+        const response = await fetchNbaCdn(`https://cdn.nba.com/static/json/liveData/boxscore/boxscore_${gameId}.json`);
 
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -1366,10 +1375,11 @@ app.get('/api/playoffs/bracket', async (req, res) => {
         }
 
         console.log('🌐 Llamando a NBA CDN schedule para playoff bracket...');
-        const response = await fetch('https://cdn.nba.com/static/json/staticData/scheduleLeagueV2_1.json');
+        const cdnUrl = 'https://cdn.nba.com/static/json/staticData/scheduleLeagueV2_2.json';
+        const response = await fetchNbaCdn(cdnUrl);
 
         if (!response.ok) {
-            throw new Error(`Error ${response.status}: ${response.statusText}`);
+            throw new Error(`NBA CDN devolvió ${response.status} (${response.statusText}) para ${cdnUrl}`);
         }
 
         const scheduleData = await response.json();
@@ -1519,7 +1529,7 @@ app.get('/api/playoffs/bracket', async (req, res) => {
         res.json(payload);
     } catch (error) {
         console.error('Error /api/playoffs/bracket:', error.message);
-        res.status(500).json({ error: 'Error al obtener playoff bracket real.' });
+        res.status(500).json({ error: `Error al obtener playoff bracket: ${error.message}` });
     }
 });
 
